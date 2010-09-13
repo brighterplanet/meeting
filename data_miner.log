@@ -1,0 +1,714 @@
+ INFO data_miner: [data_miner gem] Database table `automobile_fuel_types` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_makes` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_make_fleet_years` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_make_years` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_models` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_model_years` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_size_classes` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_variants` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_fuel_types` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_makes` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_make_fleet_years` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_make_years` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_models` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_model_years` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_size_classes` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+ INFO data_miner: [data_miner gem] Database table `automobile_variants` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner: [data_miner gem] CREATING TABLE automobile_fuel_types with {:id=>false}
+DEBUG data_miner: [data_miner gem] looks like automobile_fuel_types has a bad (or missing) primary key
+DEBUG data_miner: [data_miner gem] ADDING COLUMN code
+DEBUG data_miner: [data_miner gem] SETTING code AS PRIMARY KEY
+DEBUG data_miner: [data_miner gem] REMOVING COLUMN data_miner_placeholder
+DEBUG data_miner: [data_miner gem] ADDING COLUMN name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN emission_factor
+DEBUG data_miner: [data_miner gem] ADDING COLUMN emission_factor_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN annual_distance
+DEBUG data_miner: [data_miner gem] ADDING COLUMN annual_distance_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN created_at
+DEBUG data_miner: [data_miner gem] ADDING COLUMN updated_at
+DEBUG data_miner: [data_miner gem] REMOVING INDEX IDX_automobile_fuel_types_code
+DEBUG data_miner: [data_miner gem] ran Schema(AutomobileFuelType): Define a table called automobile_fuel_types with primary key code
+DEBUG data_miner: [data_miner gem] CREATING TABLE automobile_makes with {:id=>false}
+DEBUG data_miner: [data_miner gem] looks like automobile_makes has a bad (or missing) primary key
+DEBUG data_miner: [data_miner gem] ADDING COLUMN name
+DEBUG data_miner: [data_miner gem] SETTING name AS PRIMARY KEY
+DEBUG data_miner: [data_miner gem] REMOVING COLUMN data_miner_placeholder
+DEBUG data_miner: [data_miner gem] ADDING COLUMN major
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN created_at
+DEBUG data_miner: [data_miner gem] ADDING COLUMN updated_at
+DEBUG data_miner: [data_miner gem] REMOVING INDEX IDX_automobile_makes_name
+DEBUG data_miner: [data_miner gem] ran Schema(AutomobileMake): Define a table called automobile_makes with primary key name
+DEBUG data_miner: [data_miner gem] CREATING TABLE automobile_make_fleet_years with {:id=>false}
+DEBUG data_miner: [data_miner gem] looks like automobile_make_fleet_years has a bad (or missing) primary key
+DEBUG data_miner: [data_miner gem] ADDING COLUMN name
+DEBUG data_miner: [data_miner gem] SETTING name AS PRIMARY KEY
+DEBUG data_miner: [data_miner gem] REMOVING COLUMN data_miner_placeholder
+DEBUG data_miner: [data_miner gem] ADDING COLUMN make_year_name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN make_name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fleet
+DEBUG data_miner: [data_miner gem] ADDING COLUMN year
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN volume
+DEBUG data_miner: [data_miner gem] ADDING COLUMN created_at
+DEBUG data_miner: [data_miner gem] ADDING COLUMN updated_at
+DEBUG data_miner: [data_miner gem] REMOVING INDEX IDX_automobile_make_fleet_years_name
+DEBUG data_miner: [data_miner gem] ran Schema(AutomobileMakeFleetYear): Define a table called automobile_make_fleet_years with primary key name
+DEBUG data_miner: [data_miner gem] CREATING TABLE automobile_make_years with {:id=>false}
+DEBUG data_miner: [data_miner gem] looks like automobile_make_years has a bad (or missing) primary key
+DEBUG data_miner: [data_miner gem] ADDING COLUMN name
+DEBUG data_miner: [data_miner gem] SETTING name AS PRIMARY KEY
+DEBUG data_miner: [data_miner gem] REMOVING COLUMN data_miner_placeholder
+DEBUG data_miner: [data_miner gem] ADDING COLUMN make_name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN year
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN volume
+DEBUG data_miner: [data_miner gem] ADDING COLUMN created_at
+DEBUG data_miner: [data_miner gem] ADDING COLUMN updated_at
+DEBUG data_miner: [data_miner gem] REMOVING INDEX IDX_automobile_make_years_name
+DEBUG data_miner: [data_miner gem] ran Schema(AutomobileMakeYear): Define a table called automobile_make_years with primary key name
+DEBUG data_miner: [data_miner gem] CREATING TABLE automobile_models with {:id=>false}
+DEBUG data_miner: [data_miner gem] looks like automobile_models has a bad (or missing) primary key
+DEBUG data_miner: [data_miner gem] ADDING COLUMN name
+DEBUG data_miner: [data_miner gem] SETTING name AS PRIMARY KEY
+DEBUG data_miner: [data_miner gem] REMOVING COLUMN data_miner_placeholder
+DEBUG data_miner: [data_miner gem] ADDING COLUMN make_name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_city
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_city_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_highway
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_highway_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN created_at
+DEBUG data_miner: [data_miner gem] ADDING COLUMN updated_at
+DEBUG data_miner: [data_miner gem] REMOVING INDEX IDX_automobile_models_name
+DEBUG data_miner: [data_miner gem] ran Schema(AutomobileModel): Define a table called automobile_models with primary key name
+DEBUG data_miner: [data_miner gem] CREATING TABLE automobile_model_years with {:id=>false}
+DEBUG data_miner: [data_miner gem] looks like automobile_model_years has a bad (or missing) primary key
+DEBUG data_miner: [data_miner gem] ADDING COLUMN name
+DEBUG data_miner: [data_miner gem] SETTING name AS PRIMARY KEY
+DEBUG data_miner: [data_miner gem] REMOVING COLUMN data_miner_placeholder
+DEBUG data_miner: [data_miner gem] ADDING COLUMN make_name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN model_name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN year
+DEBUG data_miner: [data_miner gem] ADDING COLUMN make_year_name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_city
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_city_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_highway
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_highway_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN created_at
+DEBUG data_miner: [data_miner gem] ADDING COLUMN updated_at
+DEBUG data_miner: [data_miner gem] REMOVING INDEX IDX_automobile_model_years_name
+DEBUG data_miner: [data_miner gem] ran Schema(AutomobileModelYear): Define a table called automobile_model_years with primary key name
+DEBUG data_miner: [data_miner gem] CREATING TABLE automobile_size_classes with {:id=>false}
+DEBUG data_miner: [data_miner gem] looks like automobile_size_classes has a bad (or missing) primary key
+DEBUG data_miner: [data_miner gem] ADDING COLUMN name
+DEBUG data_miner: [data_miner gem] SETTING name AS PRIMARY KEY
+DEBUG data_miner: [data_miner gem] REMOVING COLUMN data_miner_placeholder
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_city
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_city_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_highway
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_highway_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN annual_distance
+DEBUG data_miner: [data_miner gem] ADDING COLUMN annual_distance_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN emblem
+DEBUG data_miner: [data_miner gem] ADDING COLUMN hybrid_fuel_efficiency_city_multiplier
+DEBUG data_miner: [data_miner gem] ADDING COLUMN hybrid_fuel_efficiency_highway_multiplier
+DEBUG data_miner: [data_miner gem] ADDING COLUMN conventional_fuel_efficiency_city_multiplier
+DEBUG data_miner: [data_miner gem] ADDING COLUMN conventional_fuel_efficiency_highway_multiplier
+DEBUG data_miner: [data_miner gem] ADDING COLUMN created_at
+DEBUG data_miner: [data_miner gem] ADDING COLUMN updated_at
+DEBUG data_miner: [data_miner gem] REMOVING INDEX IDX_automobile_size_classes_name
+DEBUG data_miner: [data_miner gem] ran Schema(AutomobileSizeClass): Define a table called automobile_size_classes with primary key name
+DEBUG data_miner: [data_miner gem] CREATING TABLE automobile_variants with {:id=>false}
+DEBUG data_miner: [data_miner gem] looks like automobile_variants has a bad (or missing) primary key
+DEBUG data_miner: [data_miner gem] ADDING COLUMN row_hash
+DEBUG data_miner: [data_miner gem] SETTING row_hash AS PRIMARY KEY
+DEBUG data_miner: [data_miner gem] REMOVING COLUMN data_miner_placeholder
+DEBUG data_miner: [data_miner gem] ADDING COLUMN name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN make_name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN model_name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN make_year_name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN model_year_name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN year
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_city
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_city_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_highway
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_efficiency_highway_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN fuel_type_code
+DEBUG data_miner: [data_miner gem] ADDING COLUMN transmission
+DEBUG data_miner: [data_miner gem] ADDING COLUMN drive
+DEBUG data_miner: [data_miner gem] ADDING COLUMN turbo
+DEBUG data_miner: [data_miner gem] ADDING COLUMN supercharger
+DEBUG data_miner: [data_miner gem] ADDING COLUMN cylinders
+DEBUG data_miner: [data_miner gem] ADDING COLUMN displacement
+DEBUG data_miner: [data_miner gem] ADDING COLUMN raw_fuel_efficiency_city
+DEBUG data_miner: [data_miner gem] ADDING COLUMN raw_fuel_efficiency_city_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN raw_fuel_efficiency_highway
+DEBUG data_miner: [data_miner gem] ADDING COLUMN raw_fuel_efficiency_highway_units
+DEBUG data_miner: [data_miner gem] ADDING COLUMN carline_mfr_code
+DEBUG data_miner: [data_miner gem] ADDING COLUMN vi_mfr_code
+DEBUG data_miner: [data_miner gem] ADDING COLUMN carline_code
+DEBUG data_miner: [data_miner gem] ADDING COLUMN carline_class_code
+DEBUG data_miner: [data_miner gem] ADDING COLUMN injection
+DEBUG data_miner: [data_miner gem] ADDING COLUMN carline_class_name
+DEBUG data_miner: [data_miner gem] ADDING COLUMN speeds
+DEBUG data_miner: [data_miner gem] ADDING COLUMN created_at
+DEBUG data_miner: [data_miner gem] ADDING COLUMN updated_at
+DEBUG data_miner: [data_miner gem] REMOVING INDEX IDX_automobile_variants_row_hash
+DEBUG data_miner: [data_miner gem] ADDING INDEX index_automobile_variants_on_make_name
+DEBUG data_miner: [data_miner gem] ADDING INDEX index_automobile_variants_on_model_name
+DEBUG data_miner: [data_miner gem] ADDING INDEX index_automobile_variants_on_make_year_name
+DEBUG data_miner: [data_miner gem] ADDING INDEX index_automobile_variants_on_model_year_name
+DEBUG data_miner: [data_miner gem] ran Schema(AutomobileVariant): Define a table called automobile_variants with primary key row_hash
+DEBUG data_miner: [data_miner gem] Database table `lodging_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner: [data_miner gem] Database table `lodging_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner: [data_miner gem] Database table `lodging_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `lodging_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 15:32:12.957217', 'AutomobileTripRecord', '2010-09-10 15:32:12.957217', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 15:32:12.977891', "values" = '--- 
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.2ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.2ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 15:33:14.387035', 'AutomobileTripRecord', '2010-09-10 15:33:14.387035', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 15:33:14.396030', "values" = '--- 
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 15:36:44.545758', 'AutomobileTripRecord', '2010-09-10 15:36:44.545758', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 15:36:44.557137', "values" = '--- 
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.1ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.2ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float, "emission_factor" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 15:38:48.393652', 'AutomobileTripRecord', '2010-09-10 15:38:48.393652', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 15:38:48.404154', "values" = '--- 
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.2ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float, "emission_factor" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 15:43:35.088806', 'AutomobileTripRecord', '2010-09-10 15:43:35.088806', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 15:43:35.098753', "values" = '--- 
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.2ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float, "emission_factor" float) 
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 15:54:19.841540', 'AutomobileTripRecord', '2010-09-10 15:54:19.841540', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 15:54:19.863539', "values" = '--- 
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.1ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float, "emission_factor" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 15:55:11.569665', 'AutomobileTripRecord', '2010-09-10 15:55:11.569665', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 15:55:11.587463', "values" = '--- 
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float, "emission_factor" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 15:55:43.652659', 'AutomobileTripRecord', '2010-09-10 15:55:43.652659', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 15:55:43.661899', "values" = '--- 
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float, "emission_factor" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 15:56:08.734702', 'AutomobileTripRecord', '2010-09-10 15:56:08.734702', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 15:56:08.745511', "values" = '--- 
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float, "emission_factor" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float, "emission_factor" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 15:57:33.249030', 'AutomobileTripRecord', '2010-09-10 15:57:33.249030', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 15:57:33.258446', "values" = '--- 
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float, "emission_factor" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 15:58:00.743838', 'AutomobileTripRecord', '2010-09-10 15:58:00.743838', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 15:58:00.755268', "values" = '--- 
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.1ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.2ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mFallback Load (0.1ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float, "emission_factor" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 16:02:06.830635', 'AutomobileTripRecord', '2010-09-10 16:02:06.830635', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 16:02:06.839966', "values" = '--- 
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.2ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float, "emission_factors" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 16:02:25.528961', 'AutomobileTripRecord', '2010-09-10 16:02:25.528961', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 16:02:25.538129', "values" = '--- 
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.2ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mFallback Load (0.1ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float, "emission_factor" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 16:03:24.093954', 'AutomobileTripRecord', '2010-09-10 16:03:24.093954', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 16:03:24.103688', "values" = '--- 
+:fuel_use: 57.0
+:emission_factor: 2.463152033412
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.1ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.2ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[36mSQL (0.3ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `lodging_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.3ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "fuel_use" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner: [data_miner gem] Database table `automobile_trip_records` doesn't exist. It might be created in the data_miner block, but if it's not, DataMiner probably won't work properly until you run a migration or otherwise fix the schema.
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m   SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.2ms)[0m  CREATE TABLE "automobile_trip_records" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "emission" float, "emission_factor" float, "fuel_use" float) 
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  SELECT version FROM "schema_migrations"
+DEBUG data_miner:   [1m[36mSQL (0.2ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.2ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mSELECT COUNT(*) AS count_id FROM "fallbacks"[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "fallbacks" ("created_at", "name", "updated_at", "values") VALUES ('2010-09-10 20:56:48.298388', 'AutomobileTripRecord', '2010-09-10 20:56:48.298388', NULL)[0m
+DEBUG data_miner:   [1m[35mSQL (0.1ms)[0m  UPDATE "fallbacks" SET "updated_at" = '2010-09-10 20:56:48.318343', "values" = '--- 
+:emission_factor: 2.463152033412
+:fuel_use: 57.0
+' WHERE ("fallbacks"."id" = 1)
+DEBUG data_miner:   [1m[36mFallback Load (0.1ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.2ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
+DEBUG data_miner:   [1m[35mFallback Load (0.1ms)[0m  SELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1
+DEBUG data_miner:   [1m[36mFallback Load (0.2ms)[0m  [1mSELECT "fallbacks".* FROM "fallbacks" WHERE ("fallbacks"."name" = 'AutomobileTripRecord') LIMIT 1[0m
