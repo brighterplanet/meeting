@@ -9,7 +9,7 @@ module BrighterPlanet
         base.decide :emission, :with => :characteristics do
           committee :emission do # returns kg CO2e
             quorum 'from default' do |characteristics|
-              100
+              100.0
             end
             
             quorum 'default' do
