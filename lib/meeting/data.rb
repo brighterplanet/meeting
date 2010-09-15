@@ -6,7 +6,6 @@ module BrighterPlanet
       def self.included(base)
         base.data_miner do
           schema do
-            float  'something'
           end
 
           process :run_data_miner_on_belongs_to_associations

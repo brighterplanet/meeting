@@ -44,6 +44,7 @@ require_or_fail('jeweler', 'Jeweler (or a dependency) not available. Install it 
     gem.add_development_dependency 'rdoc'
     gem.add_development_dependency 'rspec', '~>2.0.0.beta.17'
     gem.add_development_dependency 'sniff', '~>0.1.12' unless ENV['LOCAL_SNIFF']
+    gem.add_development_dependency 'earth', '~>0.0.39' unless ENV['LOCAL_EARTH']
     gem.add_dependency 'emitter', '~>0.0.11' unless ENV['LOCAL_EMITTER']
   end
   Jeweler::GemcutterTasks.new
