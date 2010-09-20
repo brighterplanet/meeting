@@ -6,8 +6,8 @@ module BrighterPlanet
       def self.included(base)
         base.send :include, Characterizable
         base.characterize do
-          has :duration # hours
           has :area     # square metres
+          has :duration # hours
           has :zip_code
           has :state
         end
