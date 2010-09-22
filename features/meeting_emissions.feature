@@ -14,16 +14,21 @@ Feature: Meeting Emissions Calculations
   Scenario: Calculations starting from area
     Given a meeting has "area" of "1000"
     When emissions are calculated
-    Then the emission value should be within "1" kgs of "1237.6"
+    Then the emission value should be within "0.1" kgs of "1237.6"
+
+  Scenario: Calculations starting from state
+    Given a meeting has "state.postal_abbreviation" of "CA"
+    When emissions are calculated
+    Then the emission value should be within "0.1" kgs of "80547.2"
 
   Scenario: Calculations starting from zip code
     Given a meeting has "zip_code.name" of "94122"
     When emissions are calculated
-    Then the emission value should be within "1" kgs of "80547"
+    Then the emission value should be within "0.1" kgs of "55277.5"
 
   Scenario: Calculations starting from duration, area, and zip code
     Given a meeting has "duration" of "1"
     And it has "area" of "1000"
     And it has "zip_code.name" of "94122"
     When emissions are calculated
-    Then the emission value should be within "0.1" kgs of "8500.0"
+    Then the emission value should be within "0.1" kgs of "5833.4"

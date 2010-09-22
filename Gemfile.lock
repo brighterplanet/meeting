@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    meeting (0.0.3)
+    meeting (0.0.4)
       emitter (~> 0.1.4)
 
 GEM
