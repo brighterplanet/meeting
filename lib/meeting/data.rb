@@ -1,5 +1,3 @@
-require 'data_miner'
-
 module BrighterPlanet
   module Meeting
     module Data

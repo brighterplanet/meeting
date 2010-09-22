@@ -1,11 +1,9 @@
-require 'leap'
 require 'conversions'
 
 module BrighterPlanet
   module Meeting
     module CarbonModel
       def self.included(base)
-        base.extend ::Leap::Subject
         base.decide :emission, :with => :characteristics do
           committee :emission do # returns kg CO2e
             quorum 'from duration, area, and emission factor', :needs => [:duration, :area, :emission_factor] do |characteristics|
