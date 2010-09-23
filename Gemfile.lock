@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    meeting (0.0.5)
+    meeting (0.0.6)
       earth (~> 0.2.1)
       emitter (~> 0.1.4)
 
@@ -149,7 +149,7 @@ GEM
     sinatra (1.0)
       rack (>= 1.0)
     slither (0.99.3)
-    sniff (0.1.17)
+    sniff (0.2.0)
       activerecord (~> 3.0.0)
       activesupport (~> 3.0.0)
       chronic (~> 0.2.3)
@@ -197,4 +197,4 @@ DEPENDENCIES
   rake
   rdoc
   rspec (~> 2.0.0.beta.17)
-  sniff (~> 0.1.12)
+  sniff (~> 0.2.0)
