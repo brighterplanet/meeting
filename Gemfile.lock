@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    meeting (0.0.6)
+    meeting (0.0.7)
       earth (~> 0.2.1)
       emitter (~> 0.1.7)
 
