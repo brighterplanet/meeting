@@ -59,7 +59,13 @@
 <p> Contributions to this carbon model are actively encouraged and warmly welcomed. This library includes a comprehensive test suite to ensure that your changes do not cause regressions. All changes should include test coverage for new functionality. Please see <a href="http://github.com/brighterplanet/sniff#readme">sniff</a>, our emitter testing framework, for more information.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre><span class="nb">require</span> <span class="s1">&#39;conversions&#39;</span>
+
+<span class="k">module</span> <span class="nn">BrighterPlanet</span>
+  <span class="k">module</span> <span class="nn">Meeting</span>
+    <span class="k">module</span> <span class="nn">CarbonModel</span>
+      <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+        <span class="n">base</span><span class="o">.</span><span class="n">decide</span> <span class="ss">:emission</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="ss">:characteristics</span> <span class="k">do</span></pre></div>
       </td>
     </tr>
     <tr id='section-3'>
@@ -73,7 +79,7 @@
  This is the total emission produced by the meeting venue.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:emission</span> <span class="k">do</span></pre></div>
       </td>
     </tr>
     <tr id='section-4'>
@@ -88,7 +94,10 @@
 <p> Multiplies <code>area</code> (<em>square m</em>) by <code>duration</code> (<em>hours</em>) and the <code>emission factor</code> (<em>kg CO<sub>2</sub>e / square m hour</em>) to give <em>kg CO<sub>2</sub>e</em>.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from duration, area, and emission factor&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:duration</span><span class="p">,</span> <span class="ss">:area</span><span class="p">,</span> <span class="ss">:emission_factor</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span>
+              <span class="n">characteristics</span><span class="o">[</span><span class="ss">:duration</span><span class="o">]</span> <span class="o">*</span> <span class="n">characteristics</span><span class="o">[</span><span class="ss">:area</span><span class="o">]</span> <span class="o">*</span> <span class="n">characteristics</span><span class="o">[</span><span class="ss">:emission_factor</span><span class="o">]</span>
+            <span class="k">end</span>
+            </pre></div>
       </td>
     </tr>
     <tr id='section-5'>
@@ -103,7 +112,11 @@
 <p> Displays an error if the previous method fails.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span> <span class="k">do</span>
+              <span class="k">raise</span> <span class="s2">&quot;The emission committee&#39;s default quorum should never be called&quot;</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
       </td>
     </tr>
     <tr id='section-6'>
@@ -116,7 +129,7 @@
 <p> Returns the <code>emission factor</code> (*lbs CO<sub>2</sub>e / square m hour).</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:emission_factor</span> <span class="k">do</span></pre></div>
       </td>
     </tr>
     <tr id='section-7'>
@@ -140,7 +153,20 @@
 </ul>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from eGRID subregion and fuel intensities&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:egrid_subregion</span><span class="p">,</span> <span class="ss">:natural_gas_intensity</span><span class="p">,</span> <span class="ss">:fuel_oil_intensity</span><span class="p">,</span> <span class="ss">:electricity_intensity</span><span class="p">,</span> <span class="ss">:district_heat_intensity</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span>
+              <span class="n">natural_gas</span> <span class="o">=</span> <span class="no">FuelType</span><span class="o">.</span><span class="n">find_by_name</span> <span class="s2">&quot;Commercial Natural Gas&quot;</span>
+              <span class="n">fuel_oil</span> <span class="o">=</span> <span class="no">FuelType</span><span class="o">.</span><span class="n">find_by_name</span> <span class="s2">&quot;Distillate Fuel Oil 2&quot;</span>
+              <span class="n">natural_gas_energy_ef</span> <span class="o">=</span> <span class="n">natural_gas</span><span class="o">.</span><span class="n">emission_factor</span> <span class="o">/</span> <span class="mi">38_339_000</span>
+              <span class="n">fuel_oil_energy_ef</span> <span class="o">=</span> <span class="n">fuel_oil</span><span class="o">.</span><span class="n">emission_factor</span> <span class="o">/</span> <span class="mi">38_655_000</span>
+              <span class="n">district_heat_emission_factor</span> <span class="o">=</span> <span class="p">(((</span><span class="n">natural_gas_energy_ef</span> <span class="o">/</span> <span class="mi">0</span><span class="o">.</span><span class="mi">817</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">fuel_oil_energy_ef</span> <span class="o">/</span> <span class="mi">0</span><span class="o">.</span><span class="mi">846</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="mi">0</span><span class="o">.</span><span class="mi">95</span>
+              
+              <span class="p">(</span><span class="n">characteristics</span><span class="o">[</span><span class="ss">:natural_gas_intensity</span><span class="o">]</span> <span class="o">*</span> <span class="n">natural_gas</span><span class="o">.</span><span class="n">emission_factor</span><span class="p">)</span> <span class="o">+</span>
+                <span class="p">(</span><span class="n">characteristics</span><span class="o">[</span><span class="ss">:fuel_oil_intensity</span><span class="o">]</span> <span class="o">*</span> <span class="n">fuel_oil</span><span class="o">.</span><span class="n">emission_factor</span><span class="p">)</span> <span class="o">+</span>
+                <span class="p">(</span><span class="n">characteristics</span><span class="o">[</span><span class="ss">:electricity_intensity</span><span class="o">]</span> <span class="o">*</span> <span class="n">characteristics</span><span class="o">[</span><span class="ss">:egrid_subregion</span><span class="o">].</span><span class="n">electricity_emission_factor</span><span class="p">)</span> <span class="o">+</span>
+                <span class="p">(</span><span class="n">characteristics</span><span class="o">[</span><span class="ss">:district_heat_intensity</span><span class="o">]</span> <span class="o">*</span> <span class="n">district_heat_emission_factor</span><span class="p">)</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
       </td>
     </tr>
     <tr id='section-8'>
@@ -153,7 +179,7 @@
 <p> Returns the meeting venue&rsquo;s <code>natural gas intensity</code> (<em>cubic m / square m hour</em>).</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:natural_gas_intensity</span> <span class="k">do</span> <span class="c1"># returns cubic metres per square metre hour</span></pre></div>
       </td>
     </tr>
     <tr id='section-9'>
@@ -168,7 +194,10 @@
 <p> Looks up the <a href="http://data.brighterplanet.com/census_divisions">census division</a> meeting building <code>natural gas intensity</code> (<em>cubic m / square m hour</em>).</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from census division&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:census_division</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span>
+              <span class="n">characteristics</span><span class="o">[</span><span class="ss">:census_division</span><span class="o">].</span><span class="n">meeting_building_natural_gas_intensity</span>
+            <span class="k">end</span>
+            </pre></div>
       </td>
     </tr>
     <tr id='section-10'>
@@ -183,7 +212,11 @@
 <p> Uses the U.S. average <code>natural gas intensity</code> (<em>cubic m / square m hour</em>).</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span> <span class="k">do</span>
+              <span class="no">CensusDivision</span><span class="o">.</span><span class="n">fallback</span><span class="o">.</span><span class="n">meeting_building_natural_gas_intensity</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
       </td>
     </tr>
     <tr id='section-11'>
@@ -196,7 +229,7 @@
 <p> Returns the meeting venue&rsquo;s <code>fuel oil intensity</code> (<em>l / square m hour</em>).</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:fuel_oil_intensity</span> <span class="k">do</span></pre></div>
       </td>
     </tr>
     <tr id='section-12'>
@@ -211,7 +244,10 @@
 <p> Looks up the <a href="http://data.brighterplanet.com/census_divisions">census division</a> meeting building <code>fuel oil intensity</code> (<em>l / square m hour</em>).</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from census division&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:census_division</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span>
+              <span class="n">characteristics</span><span class="o">[</span><span class="ss">:census_division</span><span class="o">].</span><span class="n">meeting_building_fuel_oil_intensity</span>
+            <span class="k">end</span>
+            </pre></div>
       </td>
     </tr>
     <tr id='section-13'>
@@ -226,7 +262,11 @@
 <p> Uses the U.S. average <code>fuel oil intensity</code> (<em>l / square m hour</em>).</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span> <span class="k">do</span>
+              <span class="no">CensusDivision</span><span class="o">.</span><span class="n">fallback</span><span class="o">.</span><span class="n">meeting_building_fuel_oil_intensity</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
       </td>
     </tr>
     <tr id='section-14'>
@@ -239,7 +279,7 @@
 <p> Returns the meeting venue&rsquo;s <code>electricity intensity</code> (<em>kWh / square m hour</em>).</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:electricity_intensity</span> <span class="k">do</span></pre></div>
       </td>
     </tr>
     <tr id='section-15'>
@@ -258,7 +298,10 @@
 </ul>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from eGRID region and census division&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:egrid_region</span><span class="p">,</span> <span class="ss">:census_division</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span>
+              <span class="n">characteristics</span><span class="o">[</span><span class="ss">:census_division</span><span class="o">].</span><span class="n">meeting_building_electricity_intensity</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">characteristics</span><span class="o">[</span><span class="ss">:egrid_region</span><span class="o">].</span><span class="n">loss_factor</span><span class="p">)</span>
+            <span class="k">end</span>
+            </pre></div>
       </td>
     </tr>
     <tr id='section-16'>
@@ -277,7 +320,11 @@
 </ul>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from eGRID region&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:egrid_region</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span>
+              <span class="no">CensusDivision</span><span class="o">.</span><span class="n">fallback</span><span class="o">.</span><span class="n">meeting_building_electricity_intensity</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">characteristics</span><span class="o">[</span><span class="ss">:egrid_region</span><span class="o">].</span><span class="n">loss_factor</span><span class="p">)</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
       </td>
     </tr>
     <tr id='section-17'>
@@ -290,7 +337,7 @@
 <p> Returns the meeting venue&rsquo;s <code>district heat intensity</code> (<em>J / square m hour</em>)</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:district_heat_intensity</span> <span class="k">do</span></pre></div>
       </td>
     </tr>
     <tr id='section-18'>
@@ -305,7 +352,10 @@
 <p> Looks up the <a href="http://data.brighterplanet.com/census_divisions">census division</a> meeting building <code>district heat intensity</code>.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from census division&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:census_division</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span>
+              <span class="n">characteristics</span><span class="o">[</span><span class="ss">:census_division</span><span class="o">].</span><span class="n">meeting_building_district_heat_intensity</span>
+            <span class="k">end</span>
+            </pre></div>
       </td>
     </tr>
     <tr id='section-19'>
@@ -320,7 +370,11 @@
 <p> Uses the U.S. average.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span> <span class="k">do</span>
+              <span class="no">CensusDivision</span><span class="o">.</span><span class="n">fallback</span><span class="o">.</span><span class="n">meeting_building_district_heat_intensity</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
       </td>
     </tr>
     <tr id='section-20'>
@@ -333,7 +387,7 @@
 <p> Returns the meeting venue&rsquo;s <a href="http://data.brighterplanet.com/egrid_regions">eGRID region</a>.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:egrid_region</span> <span class="k">do</span></pre></div>
       </td>
     </tr>
     <tr id='section-21'>
@@ -348,7 +402,11 @@
 <p> Looks up the <a href="http://data.brighterplanet.com/egrid_subregions">eGRID subregion</a> <code>eGRID region</code>.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from eGRID subregion&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:egrid_subregion</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span>
+              <span class="n">characteristics</span><span class="o">[</span><span class="ss">:egrid_subregion</span><span class="o">].</span><span class="n">egrid_region</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
       </td>
     </tr>
     <tr id='section-22'>
@@ -361,7 +419,7 @@
 <p> Returns the meeting venue&rsquo;s <a href="http://data.brighterplanet.com/egrid_subregions">eGRID subregion</a>.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:egrid_subregion</span> <span class="k">do</span></pre></div>
       </td>
     </tr>
     <tr id='section-23'>
@@ -376,7 +434,10 @@
 <p> Looks up the <a href="http://data.brighterplanet.com/zip_codes">zip code</a> <code>eGRID subregion</code>.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from zip code&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:zip_code</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span>
+              <span class="n">characteristics</span><span class="o">[</span><span class="ss">:zip_code</span><span class="o">].</span><span class="n">egrid_subregion</span>
+            <span class="k">end</span>
+            </pre></div>
       </td>
     </tr>
     <tr id='section-24'>
@@ -391,7 +452,11 @@
 <p> Uses an artificial eGRID subregion that represents the U.S. average.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span> <span class="k">do</span>
+              <span class="no">EgridSubregion</span><span class="o">.</span><span class="n">find_by_abbreviation</span> <span class="s1">&#39;US&#39;</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
       </td>
     </tr>
     <tr id='section-25'>
@@ -404,7 +469,7 @@
 <p> Returns the meeting venue&rsquo;s <a href="http://data.brighterplanet.com/census_divisions">census division</a>.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:census_division</span> <span class="k">do</span></pre></div>
       </td>
     </tr>
     <tr id='section-26'>
@@ -419,7 +484,11 @@
 <p> Looks up the <a href="http://data.brighterplanet.com/states">state</a> <code>census division</code>.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from state&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:state</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span>
+              <span class="n">characteristics</span><span class="o">[</span><span class="ss">:state</span><span class="o">].</span><span class="n">census_division</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
       </td>
     </tr>
     <tr id='section-27'>
@@ -432,7 +501,7 @@
 <p> Returns the meeting venue&rsquo;s <a href="http://data.brighterplanet.com/states">state</a>.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:state</span> <span class="k">do</span></pre></div>
       </td>
     </tr>
     <tr id='section-28'>
@@ -447,7 +516,11 @@
 <p> Looks up the <a href="http://data.brighterplanet.com/zip_codes">zip code</a> <code>state</code>.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from zip code&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:zip_code</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span>
+              <span class="n">characteristics</span><span class="o">[</span><span class="ss">:zip_code</span><span class="o">].</span><span class="n">state</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
       </td>
     </tr>
     <tr id='section-29'>
@@ -466,7 +539,7 @@
 <p> Uses the client-input <a href="http://data.brighterplanet.com/zip_codes">zip code</a>.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>          </pre></div>
       </td>
     </tr>
     <tr id='section-30'>
@@ -479,7 +552,7 @@
 <p> Returns the meeting venue&rsquo;s <code>area</code> (<em>square m</em>).</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:area</span> <span class="k">do</span></pre></div>
       </td>
     </tr>
     <tr id='section-31'>
@@ -494,7 +567,7 @@
 <p> Uses the client-input <code>area</code> (<em>square m</em>).</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            </pre></div>
       </td>
     </tr>
     <tr id='section-32'>
@@ -510,7 +583,11 @@
  This is the median size of buildings in the <a href="http://www.eia.doe.gov/emeu/cbecs/">EIA Commercial Building Energy Consumption Survey</a>.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span> <span class="k">do</span>
+              <span class="n">base</span><span class="o">.</span><span class="n">fallback</span><span class="o">.</span><span class="n">area</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
       </td>
     </tr>
     <tr id='section-33'>
@@ -523,7 +600,7 @@
 <p> Returns the meeting&rsquo;s <code>duration</code> (hours).</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:duration</span> <span class="k">do</span></pre></div>
       </td>
     </tr>
     <tr id='section-34'>
@@ -538,7 +615,7 @@
 <p> Uses the client-input <code>duration</code> (<em>hours</em>).</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            </pre></div>
       </td>
     </tr>
     <tr id='section-35'>
@@ -554,7 +631,15 @@
 
       </td>
       <td class=code>
-        <div class='highlight'><pre></pre></div>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span> <span class="k">do</span>
+              <span class="mi">8</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></pre></div>
       </td>
     </tr>
     </table>
