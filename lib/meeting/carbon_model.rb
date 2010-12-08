@@ -34,7 +34,7 @@ module BrighterPlanet
             # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
             #
             # Multiplies `area` (*square m*) by `duration` (*hours*) and the `emission factor` (*kg CO<sub>2</sub>e / square m hour*) to give *kg CO<sub>2</sub>e*.
-            quorum 'from duration, area, and emission factor', :needs => [:duration, :area, :emission_factor] do |characteristics|
+            quorum 'from duration, area, and emission factor', :needs => [:duration, :area, :emission_factor], :complies => [:ghg_protocol, :iso, :tcr] do |characteristics|
               characteristics[:duration] * characteristics[:area] * characteristics[:emission_factor]
             end
             
@@ -61,7 +61,7 @@ module BrighterPlanet
             # - Divides the energy-based natural gas emission factor by 0.817 and the energy-based fuel oil emission factor by 0.846, adds these together and divides by 2, and divides by 0.95. This gives a district heat emission factor (*kg CO<sub>2</sub>e / J*) based on the assumption that district heat is produced by 50% natural gas and 50% fuel oil, natural gas boilers are 81.7% efficient, fuel oil boilers are 84.6% efficient, and transmission losses are 5%.
             # - Multiplies `natural gas intensity` by the natural gas emission factor, `fuel oil intensity` by the fuel oil emission factor, `electricity intensity` by the electricity emission factor, and `district heat intensity` by the district heat emission factor
             # - Adds these together
-            quorum 'from eGRID subregion and fuel intensities', :needs => [:egrid_subregion, :natural_gas_intensity, :fuel_oil_intensity, :electricity_intensity, :district_heat_intensity] do |characteristics|
+            quorum 'from eGRID subregion and fuel intensities', :needs => [:egrid_subregion, :natural_gas_intensity, :fuel_oil_intensity, :electricity_intensity, :district_heat_intensity], :complies => [:ghg_protocol, :iso, :tcr] do |characteristics|
               natural_gas = FuelType.find_by_name "Commercial Natural Gas"
               fuel_oil = FuelType.find_by_name "Distillate Fuel Oil 2"
               natural_gas_energy_ef = natural_gas.emission_factor / 38_339_000
@@ -82,7 +82,7 @@ module BrighterPlanet
             # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
             #
             # Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `natural gas intensity` (*cubic m / square m hour*).
-            quorum 'from census division', :needs => :census_division do |characteristics|
+            quorum 'from census division', :needs => :census_division, :complies => [:ghg_protocol, :iso, :tcr] do |characteristics|
               characteristics[:census_division].meeting_building_natural_gas_intensity
             end
             
@@ -90,7 +90,7 @@ module BrighterPlanet
             # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
             #
             # Uses the U.S. average `natural gas intensity` (*cubic m / square m hour*).
-            quorum 'default' do
+            quorum 'default', :complies => [:ghg_protocol, :iso, :tcr] do
               CensusDivision.fallback.meeting_building_natural_gas_intensity
             end
           end
@@ -102,7 +102,7 @@ module BrighterPlanet
             # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
             #
             # Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `fuel oil intensity` (*l / square m hour*).
-            quorum 'from census division', :needs => :census_division do |characteristics|
+            quorum 'from census division', :needs => :census_division, :complies => [:ghg_protocol, :iso, :tcr] do |characteristics|
               characteristics[:census_division].meeting_building_fuel_oil_intensity
             end
             
@@ -110,7 +110,7 @@ module BrighterPlanet
             # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
             #
             # Uses the U.S. average `fuel oil intensity` (*l / square m hour*).
-            quorum 'default' do
+            quorum 'default', :complies => [:ghg_protocol, :iso, :tcr] do
               CensusDivision.fallback.meeting_building_fuel_oil_intensity
             end
           end
@@ -124,7 +124,7 @@ module BrighterPlanet
             # - Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `electricity intensity` (*kWh / square m hour*)
             # - Looks up the [eGRID region](http://data.brighterplanet.com/egrid_regions) loss factor
             # - Divides the `electricity intensity` by 1 - the loss factor to account for electricity transmission and distribution losses
-            quorum 'from eGRID region and census division', :needs => [:egrid_region, :census_division] do |characteristics|
+            quorum 'from eGRID region and census division', :needs => [:egrid_region, :census_division], :complies => [:ghg_protocol, :iso, :tcr] do |characteristics|
               characteristics[:census_division].meeting_building_electricity_intensity / (1 - characteristics[:egrid_region].loss_factor)
             end
             
@@ -134,7 +134,7 @@ module BrighterPlanet
             # - Uses the U.S. average meeting building `electricity intensity` (*kWh / square m hour*)
             # - Looks up the [eGRID region](http://data.brighterplanet.com/egrid_regions) loss factor
             # - Divides the `electricity intensity` by (1 - the loss factor) to account for electricity transmission and distribution losses
-            quorum 'from eGRID region', :needs => :egrid_region do |characteristics|
+            quorum 'from eGRID region', :needs => :egrid_region, :complies => [:ghg_protocol, :iso, :tcr] do |characteristics|
               CensusDivision.fallback.meeting_building_electricity_intensity / (1 - characteristics[:egrid_region].loss_factor)
             end
           end
@@ -146,7 +146,7 @@ module BrighterPlanet
             # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
             #
             # Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `district heat intensity`.
-            quorum 'from census division', :needs => :census_division do |characteristics|
+            quorum 'from census division', :needs => :census_division, :complies => [:ghg_protocol, :iso, :tcr] do |characteristics|
               characteristics[:census_division].meeting_building_district_heat_intensity
             end
             
@@ -154,7 +154,7 @@ module BrighterPlanet
             # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
             #
             # Uses the U.S. average.
-            quorum 'default' do
+            quorum 'default', :complies => [:ghg_protocol, :iso, :tcr] do
               CensusDivision.fallback.meeting_building_district_heat_intensity
             end
           end
@@ -166,7 +166,7 @@ module BrighterPlanet
             # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
             #
             # Looks up the [eGRID subregion](http://data.brighterplanet.com/egrid_subregions) `eGRID region`.
-            quorum 'from eGRID subregion', :needs => :egrid_subregion do |characteristics|
+            quorum 'from eGRID subregion', :needs => :egrid_subregion, :complies => [:ghg_protocol, :iso, :tcr] do |characteristics|
               characteristics[:egrid_subregion].egrid_region
             end
           end
@@ -178,7 +178,7 @@ module BrighterPlanet
             # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
             #
             # Looks up the [zip code](http://data.brighterplanet.com/zip_codes) `eGRID subregion`.
-            quorum 'from zip code', :needs => :zip_code do |characteristics|
+            quorum 'from zip code', :needs => :zip_code, :complies => [:ghg_protocol, :iso, :tcr] do |characteristics|
               characteristics[:zip_code].egrid_subregion
             end
             
@@ -186,7 +186,7 @@ module BrighterPlanet
             # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
             #
             # Uses an artificial eGRID subregion that represents the U.S. average.
-            quorum 'default' do
+            quorum 'default', :complies => [:ghg_protocol, :iso, :tcr] do
               EgridSubregion.find_by_abbreviation 'US'
             end
           end
@@ -198,7 +198,7 @@ module BrighterPlanet
             # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
             #
             # Looks up the [state](http://data.brighterplanet.com/states) `census division`.
-            quorum 'from state', :needs => :state do |characteristics|
+            quorum 'from state', :needs => :state, :complies => [:ghg_protocol, :iso, :tcr] do |characteristics|
               characteristics[:state].census_division
             end
           end
@@ -210,7 +210,7 @@ module BrighterPlanet
             # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
             #
             # Looks up the [zip code](http://data.brighterplanet.com/zip_codes) `state`.
-            quorum 'from zip code', :needs => :zip_code do |characteristics|
+            quorum 'from zip code', :needs => :zip_code, :complies => [:ghg_protocol, :iso, :tcr] do |characteristics|
               characteristics[:zip_code].state
             end
           end
@@ -235,7 +235,7 @@ module BrighterPlanet
             #
             # Uses a default `area` of 1,184.5 *square m*.
             # This is the median size of buildings in the [EIA Commercial Building Energy Consumption Survey](http://www.eia.doe.gov/emeu/cbecs/).
-            quorum 'default' do
+            quorum 'default', :complies => [:ghg_protocol, :iso, :tcr] do
               12_750.square_feet.to(:square_metres)
             end
           end
@@ -252,7 +252,7 @@ module BrighterPlanet
             # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
             #
             # Uses a default `duration` of 8 *hours*.
-            quorum 'default' do
+            quorum 'default', :complies => [:ghg_protocol, :iso, :tcr] do
               8
             end
           end
