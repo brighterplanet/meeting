@@ -236,7 +236,7 @@ module BrighterPlanet
             # Uses a default `area` of 1,184.5 *square m*.
             # This is the median size of buildings in the [EIA Commercial Building Energy Consumption Survey](http://www.eia.doe.gov/emeu/cbecs/).
             quorum 'default' do
-              base.fallback.area
+              12_750.square_feet.to(:square_metres)
             end
           end
           
