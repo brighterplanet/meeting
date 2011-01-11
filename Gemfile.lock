@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     meeting (0.0.10)
-      earth (= 0.3.6)
+      earth (~> 0.3.6)
       emitter (~> 0.3)
 
 GEM
@@ -186,7 +186,7 @@ DEPENDENCIES
   activerecord (~> 3)
   bundler (~> 1.0.0)
   cucumber (~> 0.8.3)
-  earth (= 0.3.6)
+  earth (~> 0.3.6)
   emitter (~> 0.3)
   jeweler (~> 1.4.0)
   meeting!
