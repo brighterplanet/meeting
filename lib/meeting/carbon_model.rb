@@ -249,10 +249,10 @@ module BrighterPlanet
             # Uses the client-input `duration` (*hours*).
             
             #### Default duration
-            # **Complies:** GHG Protocol, ISO 14064-1, Climate Registry Protocol
+            # **Complies:**
             #
             # Uses a default `duration` of 8 *hours*.
-            quorum 'default', :complies => [:ghg_protocol, :iso, :tcr] do
+            quorum 'default' do
               8
             end
           end
