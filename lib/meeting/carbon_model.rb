@@ -63,7 +63,7 @@ module BrighterPlanet
             # - Adds these together
             quorum 'from eGRID subregion and fuel intensities', :needs => [:egrid_subregion, :natural_gas_intensity, :fuel_oil_intensity, :electricity_intensity, :district_heat_intensity], :complies => [:ghg_protocol, :iso, :tcr] do |characteristics|
               natural_gas = FuelType.find_by_name "Commercial Natural Gas"
-              fuel_oil = FuelType.find_by_name "Distillate Fuel Oil 2"
+              fuel_oil = FuelType.find_by_name "Distillate Fuel No. 2"
               natural_gas_energy_ef = natural_gas.emission_factor / 38_339_000
               fuel_oil_energy_ef = fuel_oil.emission_factor / 38_655_000
               district_heat_emission_factor = (((natural_gas_energy_ef / 0.817) / 2) + ((fuel_oil_energy_ef / 0.846) / 2)) / 0.95
