@@ -5,13 +5,13 @@ Feature: Meeting Committee Calculations
     Given a meeting emitter
     When the "duration" committee is calculated
     Then the committee should have used quorum "default"
-    And the conclusion of the committee should be "8"
+    And the conclusion of the committee should be "8.0"
 
   Scenario: Area committee from default
     Given a meeting emitter
     When the "area" committee is calculated
     Then the committee should have used quorum "default"
-    And the conclusion of the committee should be "1184.51376"
+    And the conclusion of the committee should be "970.65096"
 
   Scenario: State committee from zip code
     Given a meeting emitter
@@ -58,14 +58,14 @@ Feature: Meeting Committee Calculations
     Given a meeting emitter
     When the "district_heat_intensity" committee is calculated
     Then the committee should have used quorum "default"
-    And the conclusion of the committee should be "3458.7"
+    And the conclusion of the committee should be "0.00542"
 
   Scenario: District heat intensity committee from census division
     Given a meeting emitter
     And a characteristic "census_division.number" of "9"
     When the "district_heat_intensity" committee is calculated
     Then the committee should have used quorum "from census division"
-    And the conclusion of the committee should be "1000"
+    And the conclusion of the committee should be "0.0"
 
   Scenario: Electricity intensity committee from default
     Given a meeting emitter
@@ -73,7 +73,7 @@ Feature: Meeting Committee Calculations
     And the "egrid_region" committee is calculated
     And the "electricity_intensity" committee is calculated
     Then the committee should have used quorum "from eGRID region"
-    And the conclusion of the committee should be "0.07626"
+    And the conclusion of the committee should be "0.09656"
 
   Scenario: Electricity intensity committee from state
     Given a meeting emitter
@@ -83,7 +83,7 @@ Feature: Meeting Committee Calculations
     And the "egrid_region" committee is calculated
     And the "electricity_intensity" committee is calculated
     Then the committee should have used quorum "from eGRID region and census division"
-    And the conclusion of the committee should be "3.15789"
+    And the conclusion of the committee should be "0.05319"
 
   Scenario: Electricity intensity committee from eGRID region and census division
     Given a meeting emitter
@@ -94,33 +94,33 @@ Feature: Meeting Committee Calculations
     And the "egrid_region" committee is calculated
     And the "electricity_intensity" committee is calculated
     Then the committee should have used quorum "from eGRID region and census division"
-    And the conclusion of the committee should be "3.33333"
+    And the conclusion of the committee should be "0.05263"
 
   Scenario: Fuel oil intensity committee from default
     Given a meeting emitter
     When the "fuel_oil_intensity" committee is calculated
     Then the committee should have used quorum "default"
-    And the conclusion of the committee should be "0.0037381"
+    And the conclusion of the committee should be "0.00377"
 
   Scenario: Fuel oil intensity committee from census division
     Given a meeting emitter
     And a characteristic "census_division.number" of "9"
     When the "fuel_oil_intensity" committee is calculated
     Then the committee should have used quorum "from census division"
-    And the conclusion of the committee should be "2"
+    And the conclusion of the committee should be "0.0"
 
   Scenario: Natural gas intensity committee from default
     Given a meeting emitter
     When the "natural_gas_intensity" committee is calculated
     Then the committee should have used quorum "default"
-    And the conclusion of the committee should be "0.011973"
+    And the conclusion of the committee should be "0.01327"
 
   Scenario: Natural gas intensity committee from census division
     Given a meeting emitter
     And a characteristic "census_division.number" of "9"
     When the "natural_gas_intensity" committee is calculated
     Then the committee should have used quorum "from census division"
-    And the conclusion of the committee should be "1"
+    And the conclusion of the committee should be "0.002"
 
   Scenario: Emission factor committee from nothing
     Given a meeting emitter
@@ -131,8 +131,8 @@ Feature: Meeting Committee Calculations
     And the "electricity_intensity" committee is calculated
     And the "district_heat_intensity" committee is calculated
     And the "emission_factor" committee is calculated
-    Then the committee should have used quorum "from eGRID subregion and fuel intensities"
-    And the conclusion of the committee should be "0.16232"
+    Then the committee should have used quorum "from fuel intensities and eGRID subregion"
+    And the conclusion of the committee should be "0.09422"
 
   Scenario: Emission factor committee from state
     Given a meeting emitter
@@ -145,8 +145,8 @@ Feature: Meeting Committee Calculations
     And the "electricity_intensity" committee is calculated
     And the "district_heat_intensity" committee is calculated
     And the "emission_factor" committee is calculated
-    Then the committee should have used quorum "from eGRID subregion and fuel intensities"
-    And the conclusion of the committee should be "8.81581"
+    Then the committee should have used quorum "from fuel intensities and eGRID subregion"
+    And the conclusion of the committee should be "0.03582"
 
   Scenario: Emission factor committee from zip code
     Given a meeting emitter
@@ -160,5 +160,5 @@ Feature: Meeting Committee Calculations
     And the "electricity_intensity" committee is calculated
     And the "district_heat_intensity" committee is calculated
     And the "emission_factor" committee is calculated
-    Then the committee should have used quorum "from eGRID subregion and fuel intensities"
-    And the conclusion of the committee should be "5.83336"
+    Then the committee should have used quorum "from fuel intensities and eGRID subregion"
+    And the conclusion of the committee should be "0.01969"
