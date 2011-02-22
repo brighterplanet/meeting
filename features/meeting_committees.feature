@@ -131,8 +131,8 @@ Feature: Meeting Committee Calculations
     And the "electricity_intensity" committee is calculated
     And the "district_heat_intensity" committee is calculated
     And the "emission_factor" committee is calculated
-    Then the committee should have used quorum "from fuel intensities and eGRID subregion"
-    And the conclusion of the committee should be "0.09422"
+    Then the committee should have used quorum "from fuel intensities and eGRID"
+    And the conclusion of the committee should be "0.09744"
 
   Scenario: Emission factor committee from state
     Given a meeting emitter
@@ -145,8 +145,8 @@ Feature: Meeting Committee Calculations
     And the "electricity_intensity" committee is calculated
     And the "district_heat_intensity" committee is calculated
     And the "emission_factor" committee is calculated
-    Then the committee should have used quorum "from fuel intensities and eGRID subregion"
-    And the conclusion of the committee should be "0.03582"
+    Then the committee should have used quorum "from fuel intensities and eGRID"
+    And the conclusion of the committee should be "0.03775"
 
   Scenario: Emission factor committee from zip code
     Given a meeting emitter
@@ -160,5 +160,5 @@ Feature: Meeting Committee Calculations
     And the "electricity_intensity" committee is calculated
     And the "district_heat_intensity" committee is calculated
     And the "emission_factor" committee is calculated
-    Then the committee should have used quorum "from fuel intensities and eGRID subregion"
-    And the conclusion of the committee should be "0.01969"
+    Then the committee should have used quorum "from fuel intensities and eGRID"
+    And the conclusion of the committee should be "0.02042"
