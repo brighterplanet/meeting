@@ -27,22 +27,19 @@ module BrighterPlanet
       def self.included(base)
         base.decide :emission, :with => :characteristics do
           ### Emission calculation
-          # Returns the `emission` estimate (*kg CO<sub>2</sub>e*).
-          # This is the total emission produced by the meeting venue.
+          # Returns the `emission` estimate (*kg CO<sub>2</sub>e*). This is the total emission produced by the meeting venue.
           committee :emission do
             #### Emission from duration, area, and emission factor
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # Multiplies `area` (*square m*) by `duration` (*hours*) and the `emission factor` (*kg CO<sub>2</sub>e / square m hour*) to give *kg CO<sub>2</sub>e*.
-            quorum 'from duration, area, and emission factor', :needs => [:duration, :area, :emission_factor], :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-              characteristics[:duration] * characteristics[:area] * characteristics[:emission_factor]
+            quorum 'from duration, area, and emission factor', :needs => [:duration, :area, :emission_factor],
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+                # Multiplies `area` (*square m*) by `duration` (*hours*) and the `emission factor` (*kg CO<sub>2</sub>e / square m hour*) to give *kg CO<sub>2</sub>e*.
+                characteristics[:duration] * characteristics[:area] * characteristics[:emission_factor]
             end
             
             #### Default emission
-            # **Complies:**
-            #
-            # Displays an error if the previous method fails.
             quorum 'default' do
+              # Displays an error if the previous method fails.
               raise "The emission committee's default quorum should never be called"
             end
           end
@@ -80,19 +77,19 @@ module BrighterPlanet
           # Returns the meeting venue's `natural gas intensity` (*cubic m / square m hour*).
           committee :natural_gas_intensity do # returns cubic metres per square metre hour
             #### From census division
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `natural gas intensity` (*cubic m / square m hour*).
-            quorum 'from census division', :needs => :census_division, :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-              characteristics[:census_division].meeting_building_natural_gas_intensity
+            quorum 'from census division', :needs => :census_division, 
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+                # Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `natural gas intensity` (*cubic m / square m hour*).
+                characteristics[:census_division].meeting_building_natural_gas_intensity
             end
             
             #### Default natural gas intensity
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # Uses the U.S. average `natural gas intensity` (*cubic m / square m hour*).
-            quorum 'default', :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
-              CensusDivision.fallback.meeting_building_natural_gas_intensity
+            quorum 'default',
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
+                # Uses the U.S. average `natural gas intensity` (*cubic m / square m hour*).
+                CensusDivision.fallback.meeting_building_natural_gas_intensity
             end
           end
           
@@ -100,19 +97,19 @@ module BrighterPlanet
           # Returns the meeting venue's `fuel oil intensity` (*l / square m hour*).
           committee :fuel_oil_intensity do
             #### Fuel oil intensity from census division
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `fuel oil intensity` (*l / square m hour*).
-            quorum 'from census division', :needs => :census_division, :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-              characteristics[:census_division].meeting_building_fuel_oil_intensity
+            quorum 'from census division', :needs => :census_division,
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+                # Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `fuel oil intensity` (*l / square m hour*).
+                characteristics[:census_division].meeting_building_fuel_oil_intensity
             end
             
             #### Default fuel oil intensity
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # Uses the U.S. average `fuel oil intensity` (*l / square m hour*).
-            quorum 'default', :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
-              CensusDivision.fallback.meeting_building_fuel_oil_intensity
+            quorum 'default',
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
+                # Uses the U.S. average `fuel oil intensity` (*l / square m hour*).
+                CensusDivision.fallback.meeting_building_fuel_oil_intensity
             end
           end
           
@@ -120,23 +117,23 @@ module BrighterPlanet
           # Returns the meeting venue's `electricity intensity` (*kWh / square m hour*).
           committee :electricity_intensity do
             #### Electricity intensity from census division and eGRID region
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # - Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `electricity intensity` (*kWh / square m hour*)
-            # - Looks up the [eGRID region](http://data.brighterplanet.com/egrid_regions) loss factor
-            # - Divides the `electricity intensity` by 1 - the loss factor to account for electricity transmission and distribution losses
-            quorum 'from eGRID region and census division', :needs => [:egrid_region, :census_division], :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-              characteristics[:census_division].meeting_building_electricity_intensity / (1 - characteristics[:egrid_region].loss_factor)
+            quorum 'from eGRID region and census division', :needs => [:egrid_region, :census_division],
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+                # - Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `electricity intensity` (*kWh / square m hour*)
+                # - Looks up the [eGRID region](http://data.brighterplanet.com/egrid_regions) loss factor
+                # - Divides the `electricity intensity` by 1 - the loss factor to account for electricity transmission and distribution losses
+                characteristics[:census_division].meeting_building_electricity_intensity / (1 - characteristics[:egrid_region].loss_factor)
             end
             
             #### Electricity intensity from eGRID region
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # - Uses the U.S. average meeting building `electricity intensity` (*kWh / square m hour*)
-            # - Looks up the [eGRID region](http://data.brighterplanet.com/egrid_regions) loss factor
-            # - Divides the `electricity intensity` by (1 - the loss factor) to account for electricity transmission and distribution losses
-            quorum 'from eGRID region', :needs => :egrid_region, :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-              CensusDivision.fallback.meeting_building_electricity_intensity / (1 - characteristics[:egrid_region].loss_factor)
+            quorum 'from eGRID region', :needs => :egrid_region,
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+                # - Uses the U.S. average meeting building `electricity intensity` (*kWh / square m hour*)
+                # - Looks up the [eGRID region](http://data.brighterplanet.com/egrid_regions) loss factor
+                # - Divides the `electricity intensity` by (1 - the loss factor) to account for electricity transmission and distribution losses
+                CensusDivision.fallback.meeting_building_electricity_intensity / (1 - characteristics[:egrid_region].loss_factor)
             end
           end
           
@@ -144,19 +141,19 @@ module BrighterPlanet
           # Returns the meeting venue's `district heat intensity` (*MJ / square m hour*)
           committee :district_heat_intensity do
             #### District heat intensity from census division
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `district heat intensity`.
-            quorum 'from census division', :needs => :census_division, :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-              characteristics[:census_division].meeting_building_district_heat_intensity
+            quorum 'from census division', :needs => :census_division,
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+                # Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `district heat intensity`.
+                characteristics[:census_division].meeting_building_district_heat_intensity
             end
             
             #### Default district heat intensity
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # Uses the U.S. average.
-            quorum 'default', :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
-              CensusDivision.fallback.meeting_building_district_heat_intensity
+            quorum 'default',
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
+                # Uses the U.S. average.
+                CensusDivision.fallback.meeting_building_district_heat_intensity
             end
           end
           
@@ -164,10 +161,10 @@ module BrighterPlanet
           # Returns the meeting venue's [eGRID region](http://data.brighterplanet.com/egrid_regions).
           committee :egrid_region do
             #### eGRID region from eGRID subregion
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # Looks up the [eGRID subregion](http://data.brighterplanet.com/egrid_subregions) `eGRID region`.
-            quorum 'from eGRID subregion', :needs => :egrid_subregion, :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+            quorum 'from eGRID subregion', :needs => :egrid_subregion,
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+              # Looks up the [eGRID subregion](http://data.brighterplanet.com/egrid_subregions) `eGRID region`.
               characteristics[:egrid_subregion].egrid_region
             end
           end
@@ -176,19 +173,19 @@ module BrighterPlanet
           # Returns the meeting venue's [eGRID subregion](http://data.brighterplanet.com/egrid_subregions).
           committee :egrid_subregion do
             #### eGRID subregion from zip code
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # Looks up the [zip code](http://data.brighterplanet.com/zip_codes) `eGRID subregion`.
-            quorum 'from zip code', :needs => :zip_code, :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-              characteristics[:zip_code].egrid_subregion
+            quorum 'from zip code', :needs => :zip_code,
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+                # Looks up the [zip code](http://data.brighterplanet.com/zip_codes) `eGRID subregion`.
+                characteristics[:zip_code].egrid_subregion
             end
             
             #### Default eGRID subregion
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # Uses an artificial eGRID subregion that represents the U.S. average.
-            quorum 'default', :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
-              EgridSubregion.find_by_abbreviation 'US'
+            quorum 'default',
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
+                # Uses an artificial eGRID subregion that represents the U.S. average.
+                EgridSubregion.find_by_abbreviation 'US'
             end
           end
           
@@ -196,11 +193,11 @@ module BrighterPlanet
           # Returns the meeting venue's [census division](http://data.brighterplanet.com/census_divisions).
           committee :census_division do
             #### Census division from state
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # Looks up the [state](http://data.brighterplanet.com/states) `census division`.
-            quorum 'from state', :needs => :state, :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-              characteristics[:state].census_division
+            quorum 'from state', :needs => :state,
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+                # Looks up the [state](http://data.brighterplanet.com/states) `census division`.
+                characteristics[:state].census_division
             end
           end
           
@@ -208,11 +205,11 @@ module BrighterPlanet
           # Returns the meeting venue's [state](http://data.brighterplanet.com/states).
           committee :state do
             #### State from zip code
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # Looks up the [zip code](http://data.brighterplanet.com/zip_codes) `state`.
-            quorum 'from zip code', :needs => :zip_code, :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-              characteristics[:zip_code].state
+            quorum 'from zip code', :needs => :zip_code,
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+                # Looks up the [zip code](http://data.brighterplanet.com/zip_codes) `state`.
+                characteristics[:zip_code].state
             end
           end
           
@@ -232,17 +229,16 @@ module BrighterPlanet
             # Uses the client-input `area` (*square m*).
             
             #### Default area
-            # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-            #
-            # Uses a default `area` of 1,184.5 *square m*.
-            # This is the average size of meeting buildings in the [EIA Commercial Building Energy Consumption Survey](http://www.eia.doe.gov/emeu/cbecs/).
-            quorum 'default', :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
-              10_448.square_feet.to(:square_metres)
+            quorum 'default',
+              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
+                # Uses a default `area` of 1,184.5 *square m*. This is the average size of meeting buildings in the [EIA Commercial Building Energy Consumption Survey](http://www.eia.doe.gov/emeu/cbecs/).
+                10_448.square_feet.to(:square_metres)
             end
           end
           
           ### Duration calculation
-          # Returns the meeting's `duration` (hours).
+          # Returns the meeting's `duration` (hours). This is the number of hours the meeting venue is in use. For example, a two-day conference that runs 8 hours each day would have a duration of 16.
           committee :duration do
             #### Duration from client input
             # **Complies:** All
@@ -250,10 +246,8 @@ module BrighterPlanet
             # Uses the client-input `duration` (*hours*).
             
             #### Default duration
-            # **Complies:**
-            #
-            # Uses a default `duration` of 8 *hours*.
             quorum 'default' do
+              # Uses a default `duration` of 8 *hours*.
               8
             end
           end
