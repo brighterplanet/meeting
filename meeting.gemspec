@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Andy Rossmeissl", "Seamus Abshere", "Ian Hough", "Matt Kling", "Derek Kastner"]
-  s.date = %q{2011-02-21}
+  s.date = %q{2011-02-25}
   s.description = %q{A software model in Ruby for the greenhouse gas emissions of a meeting}
   s.email = %q{andy@rossmeissl.net}
   s.extra_rdoc_files = [
@@ -24,7 +24,6 @@ Gem::Specification.new do |s|
      "lib/meeting/carbon_model.rb",
      "lib/meeting/characterization.rb",
      "lib/meeting/data.rb",
-     "lib/meeting/fallback.rb",
      "lib/meeting/relationships.rb",
      "lib/meeting/summarization.rb",
      "lib/test_support/meeting_record.rb"
