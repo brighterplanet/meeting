@@ -5,7 +5,7 @@ Feature: Meeting Committee Calculations
     Given a meeting emitter
     When the "duration" committee is calculated
     Then the committee should have used quorum "default"
-    And the conclusion of the committee should be "8.0"
+    And the conclusion of the committee should be "28800.0"
 
   Scenario: Area committee from default
     Given a meeting emitter

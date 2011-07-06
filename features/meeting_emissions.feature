@@ -7,7 +7,7 @@ Feature: Meeting Emissions Calculations
     Then the emission value should be within "0.1" kgs of "756.67"
 
   Scenario: Calculations starting from duration
-    Given a meeting has "duration" of "1"
+    Given a meeting has "duration" of "3600.0"
     When emissions are calculated
     Then the emission value should be within "0.1" kgs of "94.58"
 
@@ -27,7 +27,7 @@ Feature: Meeting Emissions Calculations
     Then the emission value should be within "0.1" kgs of "158.57"
 
   Scenario: Calculations starting from duration, area, and zip code
-    Given a meeting has "duration" of "1"
+    Given a meeting has "duration" of "3600.0"
     And it has "area" of "500"
     And it has "zip_code.name" of "94122"
     When emissions are calculated

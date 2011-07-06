@@ -33,8 +33,8 @@ module BrighterPlanet
             quorum 'from duration, area, and emission factor', :needs => [:duration, :area, :emission_factor],
               # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
               :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-                # Multiplies `area` (*square m*) by `duration` (*hours*) and the `emission factor` (*kg CO<sub>2</sub>e / square m hour*) to give *kg CO<sub>2</sub>e*.
-                characteristics[:duration] * characteristics[:area] * characteristics[:emission_factor]
+                # Multiplies `area` (*square m*) by `duration` (*seconds*) and the `emission factor` (*kg CO<sub>2</sub>e / square m hour*) to give *kg CO<sub>2</sub>e*.
+                characteristics[:duration] / 3600.0 * characteristics[:area] * characteristics[:emission_factor]
             end
             
             #### Default emission
@@ -238,17 +238,17 @@ module BrighterPlanet
           end
           
           ### Duration calculation
-          # Returns the meeting's `duration` (hours). This is the number of hours the meeting venue is in use. For example, a two-day conference that runs 8 hours each day would have a duration of 16.
+          # Returns the meeting's `duration` (seconds). This is the number of seconds the meeting venue is in use. For example, a two-day conference that runs 8 hours each day would have a duration of 57600.
           committee :duration do
             #### Duration from client input
             # **Complies:** All
             #
-            # Uses the client-input `duration` (*hours*).
+            # Uses the client-input `duration` (*seconds*).
             
             #### Default duration
             quorum 'default' do
-              # Uses a default `duration` of 8 *hours*.
-              8
+              # Uses a default `duration` of 28800 *seconds* (8 hours).
+              28800.0
             end
           end
         end
