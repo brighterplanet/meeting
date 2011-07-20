@@ -2,7 +2,7 @@ module BrighterPlanet
   module Meeting
     module Data
       def self.included(base)
-        base.create_table do
+        base.force_schema do
           float  'area'
           float  'duration'
           string 'zip_code_name'
