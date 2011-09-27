@@ -2,12 +2,10 @@ module BrighterPlanet
   module Meeting
     module Data
       def self.included(base)
-        base.force_schema do
-          float  'area'
-          float  'duration'
-          string 'zip_code_name'
-          string 'state_postal_abbreviation'
-        end
+        base.col :area, :type => :float
+        base.col :duration, :type => :float
+        base.col :zip_code_name
+        base.col :state_postal_abbreviation
       end
     end
   end
