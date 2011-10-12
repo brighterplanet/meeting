@@ -4,6 +4,6 @@ require 'meeting'
 require 'sniff'
 
 class MeetingRecord < ActiveRecord::Base
-  include Sniff::Emitter
+  include BrighterPlanet::Emitter
   include BrighterPlanet::Meeting
 end
