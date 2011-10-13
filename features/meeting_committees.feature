@@ -5,10 +5,14 @@ Feature: Meeting Committee Calculations
     Given a Meeting
 
   Scenario: Duration committee from default
-    Given the conclusion of the committee should be "28800.0"
+    When the "duration" committee reports
+    Then the committee should have used quorum "default"
+    And the conclusion of the committee should be "28800.0"
 
   Scenario: Area committee from default
-    Given the conclusion of the committee should be "970.65096"
+    When the "area" committee reports
+    Then the committee should have used quorum "default"
+    And the conclusion of the committee should be "970.65096"
 
   Scenario: State committee from zip code
     Given a characteristic "zip_code.name" of "94122"
@@ -23,7 +27,9 @@ Feature: Meeting Committee Calculations
     And the conclusion of the committee should have "number" of "9"
 
   Scenario: eGRID subregion committee from default
-    Given the conclusion of the committee should have "abbreviation" of "US"
+    When the "egrid_subregion" committee reports
+    Then the committee should have used quorum "default"
+    And the conclusion of the committee should have "abbreviation" of "US"
 
   Scenario: eGRID subregion committee from zip code
     Given a characteristic "zip_code.name" of "94122"
@@ -32,7 +38,8 @@ Feature: Meeting Committee Calculations
     And the conclusion of the committee should have "abbreviation" of "CAMX"
 
   Scenario: eGRID region committee from nothing
-    Given the "egrid_region" committee reports
+    When the "egrid_subregion" committee reports
+    And the "egrid_region" committee reports
     Then the committee should have used quorum "from eGRID subregion"
     And the conclusion of the committee should have "name" of "US"
 
@@ -43,7 +50,9 @@ Feature: Meeting Committee Calculations
     And the conclusion of the committee should have "name" of "W"
 
   Scenario: District heat intensity committee from default
-    Given the conclusion of the committee should be "0.00542"
+    When the "district_heat_intensity" committee reports
+    Then the committee should have used quorum "default"
+    And the conclusion of the committee should be "0.00542"
 
   Scenario: District heat intensity committee from census division
     Given a characteristic "census_division.number" of "9"
@@ -52,7 +61,8 @@ Feature: Meeting Committee Calculations
     And the conclusion of the committee should be "0.0"
 
   Scenario: Electricity intensity committee from default
-    Given the "egrid_region" committee reports
+    When the "egrid_subregion" committee reports
+    And the "egrid_region" committee reports
     And the "electricity_intensity" committee reports
     Then the committee should have used quorum "from eGRID region"
     And the conclusion of the committee should be "0.09656"
@@ -77,7 +87,9 @@ Feature: Meeting Committee Calculations
     And the conclusion of the committee should be "0.05263"
 
   Scenario: Fuel oil intensity committee from default
-    Given the conclusion of the committee should be "0.00377"
+    When the "fuel_oil_intensity" committee reports
+    Then the committee should have used quorum "default"
+    And the conclusion of the committee should be "0.00377"
 
   Scenario: Fuel oil intensity committee from census division
     Given a characteristic "census_division.number" of "9"
@@ -86,7 +98,9 @@ Feature: Meeting Committee Calculations
     And the conclusion of the committee should be "0.0"
 
   Scenario: Natural gas intensity committee from default
-    Given the conclusion of the committee should be "0.01327"
+    When the "natural_gas_intensity" committee reports
+    Then the committee should have used quorum "default"
+    And the conclusion of the committee should be "0.01327"
 
   Scenario: Natural gas intensity committee from census division
     Given a characteristic "census_division.number" of "9"
@@ -95,7 +109,8 @@ Feature: Meeting Committee Calculations
     And the conclusion of the committee should be "0.002"
 
   Scenario: Emission factor committee from nothing
-    Given the "egrid_region" committee reports
+    When the "egrid_subregion" committee reports
+    And the "egrid_region" committee reports
     And the "natural_gas_intensity" committee reports
     And the "fuel_oil_intensity" committee reports
     And the "electricity_intensity" committee reports
