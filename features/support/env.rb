@@ -8,4 +8,4 @@ require 'data_miner'
 DataMiner.logger = Logger.new(nil)
 
 require 'sniff'
-Sniff.init File.join(File.dirname(__FILE__), '..', '..'), :cucumber => true, :earth => [:locality, :fuel]
+Sniff.init File.join(File.dirname(__FILE__), '..', '..'), :cucumber => true, :earth => [:locality, :fuel], :logger => 'log/test_log.txt'
