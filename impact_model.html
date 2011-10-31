@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>impact_model.rb</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-1667526-20']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <style type="text/css">
+    td.docs h1 {
+      margin-top: 0;
+    }
+    @media print {
+      .code pre {
+        white-space: pre-wrap;
+      }
+      .code {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      .code .highlight {
+        margin-left: 15px;
+        margin-right: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>impact_model.rb</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        <p>Copyright © 2010 Brighter Planet.
+See LICENSE for details.
+Contact Brighter Planet for dual-license arrangements.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Meeting_carbon_model'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Meeting_carbon_model">&#182;</a>
+        </div>
+        <h1>Meeting carbon model</h1>
+
+<p>This model is used by <a href="http://brighterplanet.com">Brighter Planet</a>&rsquo;s carbon emission <a href="http://carbon.brighterplanet.com">web service</a> to estimate the <strong>greenhouse gas emissions of a meeting</strong> (e.g. a conference).</p>
+
+<h4>Timeframe and date</h4>
+
+<p>The model estimates the emissions that occur during a particular <code>timeframe</code>. To do this it needs to know the meeting&rsquo;s <code>date</code>. For example, if the <code>timeframe</code> is January 2010, a meeting that occurred on January 11 2010 will have emissions but a meeting that occurred on Febraury 1 2010 will not.</p>
+
+<h4>Calculations</h4>
+
+<p>The final estimate is the result of the <strong>calculations</strong> detailed below. These calculations are performed in reverse order, starting with the last calculation listed and finishing with the <code>emission</code> calculation. Each calculation is named according to the value it returns.</p>
+
+<h4>Methods</h4>
+
+<p>To accomodate varying client input, each calculation may have one or more <strong>methods</strong>. These are listed under each calculation in order from most to least preferred. Each method is named according to the values it requires. If any of these values is not available the method will be ignored. If all the methods for a calculation are ignored, the calculation will not return a value. &ldquo;Default&rdquo; methods do not require any values, and so a calculation with a default method will always return a value.</p>
+
+<h4>Standard compliance</h4>
+
+<p>Each method lists any established calculation standards with which it <strong>complies</strong>. When compliance with a standard is requested, all methods that do not comply with that standard are ignored. This means that any values a particular method requires will have been calculated using a compliant method, because those are the only methods available. If any value did not have a compliant method in its calculation then it would be undefined, and the current method would have been ignored.</p>
+
+<h4>Collaboration</h4>
+
+<p>Contributions to this carbon model are actively encouraged and warmly welcomed. This library includes a comprehensive test suite to ensure that your changes do not cause regressions. All changes should include test coverage for new functionality. Please see <a href="https://github.com/brighterplanet/sniff#readme">sniff</a>, our emitter testing framework, for more information.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="nb">require</span> <span class="s1">&#39;conversions&#39;</span>
+
+<span class="k">module</span> <span class="nn">BrighterPlanet</span>
+  <span class="k">module</span> <span class="nn">Meeting</span>
+    <span class="k">module</span> <span class="nn">ImpactModel</span>
+      <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
+        <span class="n">base</span><span class="o">.</span><span class="n">decide</span> <span class="ss">:impact</span><span class="p">,</span> <span class="ss">:with</span> <span class="o">=&gt;</span> <span class="ss">:characteristics</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Emission_calculation'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Emission_calculation">&#182;</a>
+        </div>
+        <h2>Emission calculation</h2>
+
+<p>Returns the <code>emission</code> estimate (<em>kg CO<sub>2</sub>e</em>). This is the total emission produced by the meeting venue.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:carbon</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Emission_from_duration,_area,_and_emission_factor'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Emission_from_duration,_area,_and_emission_factor">&#182;</a>
+        </div>
+        <h3>Emission from duration, area, and emission factor</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from duration, area, and emission factor&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:duration</span><span class="p">,</span> <span class="ss">:area</span><span class="p">,</span> <span class="ss">:emission_factor</span><span class="o">]</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-5'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-5">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-6'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-6">&#182;</a>
+        </div>
+        <p>Multiplies <code>area</code> (<em>square m</em>) by <code>duration</code> (<em>seconds</em>) and the <code>emission factor</code> (<em>kg CO<sub>2</sub>e / square m hour</em>) to give <em>kg CO<sub>2</sub>e</em>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="n">characteristics</span><span class="o">[</span><span class="ss">:duration</span><span class="o">]</span> <span class="o">/</span> <span class="mi">3600</span><span class="o">.</span><span class="mi">0</span> <span class="o">*</span> <span class="n">characteristics</span><span class="o">[</span><span class="ss">:area</span><span class="o">]</span> <span class="o">*</span> <span class="n">characteristics</span><span class="o">[</span><span class="ss">:emission_factor</span><span class="o">]</span>
+            <span class="k">end</span>
+            </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Default_emission'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Default_emission">&#182;</a>
+        </div>
+        <h3>Default emission</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-8'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-8">&#182;</a>
+        </div>
+        <p>Displays an error if the previous method fails.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="k">raise</span> <span class="s2">&quot;The emission committee&#39;s default quorum should never be called&quot;</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Emission_factor_calculation'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Emission_factor_calculation">&#182;</a>
+        </div>
+        <h2>Emission factor calculation</h2>
+
+<p>Returns the <code>emission factor</code> (*lbs CO<sub>2</sub>e / square m hour).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:emission_factor</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Emission_factor_from_fuel_intensities_and_eGRID'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Emission_factor_from_fuel_intensities_and_eGRID">&#182;</a>
+        </div>
+        <h3>Emission factor from fuel intensities and eGRID</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from fuel intensities and eGRID&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:natural_gas_intensity</span><span class="p">,</span> <span class="ss">:fuel_oil_intensity</span><span class="p">,</span> <span class="ss">:electricity_intensity</span><span class="p">,</span> <span class="ss">:district_heat_intensity</span><span class="p">,</span> <span class="ss">:egrid_subregion</span><span class="p">,</span> <span class="ss">:egrid_region</span><span class="o">]</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-11'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-11">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-12'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-12">&#182;</a>
+        </div>
+        <p>Calculates an energy-based emission factor for <a href="http://data.brighterplanet.com/fuels">natural gas</a> by dividing its <code>co2 emission factor</code> (<em>kg / cubic m</em>) by its <code>energy content</code> (<em>MJ / cubic m</em>) to give <em>kg CO<sub>2</sub> / MJ</em></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="n">natural_gas</span> <span class="o">=</span> <span class="no">Fuel</span><span class="o">.</span><span class="n">find_by_name</span> <span class="s2">&quot;Pipeline Natural Gas&quot;</span>
+                <span class="n">natural_gas_energy_ef</span> <span class="o">=</span> <span class="n">natural_gas</span><span class="o">.</span><span class="n">co2_emission_factor</span> <span class="o">/</span> <span class="n">natural_gas</span><span class="o">.</span><span class="n">energy_content</span>
+                </pre></div>
+      </td>
+    </tr>
+    <tr id='section-13'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-13">&#182;</a>
+        </div>
+        <p>Calculates an energy-based emission factor for <a href="http://data.brighterplanet.com/fuels">fuel oil</a> by dividing its <code>co2 emission factor</code> (<em>kg / l</em>) by its <code>energy content</code> (<em>MJ / l</em>) to give <em>kg CO<sub>2</sub> / MJ</em></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="n">fuel_oil</span> <span class="o">=</span> <span class="no">Fuel</span><span class="o">.</span><span class="n">find_by_name</span> <span class="s2">&quot;Distillate Fuel Oil No. 2&quot;</span>
+                <span class="n">fuel_oil_energy_ef</span> <span class="o">=</span> <span class="n">fuel_oil</span><span class="o">.</span><span class="n">co2_emission_factor</span> <span class="o">/</span> <span class="n">fuel_oil</span><span class="o">.</span><span class="n">energy_content</span>
+                </pre></div>
+      </td>
+    </tr>
+    <tr id='section-14'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-14">&#182;</a>
+        </div>
+        <p>Calculates an energy-based emission factor for district heat by dividing the energy-based natural gas emission factor by 0.817 and the energy-based fuel oil emission factor by 0.846 (to account for boiler inefficiencies), averaging the two, and dividing by 0.95 (to account for transmission losses) to give <em>kg CO<sub>2</sub> / MJ</em></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="n">district_heat_ef</span> <span class="o">=</span> <span class="p">(((</span><span class="n">natural_gas_energy_ef</span> <span class="o">/</span> <span class="mi">0</span><span class="o">.</span><span class="mi">817</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">fuel_oil_energy_ef</span> <span class="o">/</span> <span class="mi">0</span><span class="o">.</span><span class="mi">846</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">0</span><span class="o">.</span><span class="mi">95</span> <span class="c1"># kg / MJ</span>
+                </pre></div>
+      </td>
+    </tr>
+    <tr id='section-15'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-15">&#182;</a>
+        </div>
+        <p>Calculates an electricity emission factor by dividing the <a href="http://data.brighterplanet.com/egrid_subregions">eGRID subregion</a> electricity emission factor by 1 &ndash; the <a href="http://data.brighterplanet.com/egrid_regions">eGRID region</a> loss factor (to account for transmission and distribution losses) to give <em>kg CO<sub>2</sub> / kWh</em></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="n">electricity_ef</span> <span class="o">=</span> <span class="n">characteristics</span><span class="o">[</span><span class="ss">:egrid_subregion</span><span class="o">].</span><span class="n">electricity_emission_factor</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">characteristics</span><span class="o">[</span><span class="ss">:egrid_region</span><span class="o">].</span><span class="n">loss_factor</span><span class="p">)</span>
+                </pre></div>
+      </td>
+    </tr>
+    <tr id='section-16'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-16">&#182;</a>
+        </div>
+        <p>Multiplies <code>natural gas intensity</code> (<em>cubic m / room-night</em>) by the volume-based natural gas emission factor (<em>kg CO<sub>2</sub> / room-night</em>), <code>fuel oil intensity</code> (<em>l / room-night</em>) by the volume-based fuel oil emission factor (<em>kg CO<sub>2</sub> / l</em>), <code>electricity intensity</code> (<em>kWh / room-night</em>) by the electricity emission factor (<em>kg CO<sub>2</sub> / kWh</em>), and <code>district heat intensity</code> (<em>MJ / room-night</em>) by the energy-based district heat emission factor (<em>kg CO<sub>2</sub> / MJ</em>), and adds these together to give <em>kg CO<sub>2</sub> / room-night</em>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="p">(</span><span class="n">characteristics</span><span class="o">[</span><span class="ss">:natural_gas_intensity</span><span class="o">]</span> <span class="o">*</span> <span class="n">natural_gas</span><span class="o">.</span><span class="n">co2_emission_factor</span><span class="p">)</span> <span class="o">+</span>
+                <span class="p">(</span><span class="n">characteristics</span><span class="o">[</span><span class="ss">:fuel_oil_intensity</span><span class="o">]</span> <span class="o">*</span> <span class="n">fuel_oil</span><span class="o">.</span><span class="n">co2_emission_factor</span><span class="p">)</span> <span class="o">+</span>
+                <span class="p">(</span><span class="n">characteristics</span><span class="o">[</span><span class="ss">:district_heat_intensity</span><span class="o">]</span> <span class="o">*</span> <span class="n">district_heat_ef</span><span class="p">)</span> <span class="o">+</span>
+                <span class="p">(</span><span class="n">characteristics</span><span class="o">[</span><span class="ss">:electricity_intensity</span><span class="o">]</span> <span class="o">*</span> <span class="n">electricity_ef</span><span class="p">)</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Natural_gas_intensity_calculation'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Natural_gas_intensity_calculation">&#182;</a>
+        </div>
+        <h2>Natural gas intensity calculation</h2>
+
+<p>Returns the meeting venue&rsquo;s <code>natural gas intensity</code> (<em>cubic m / square m hour</em>).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:natural_gas_intensity</span> <span class="k">do</span> <span class="c1"># returns cubic metres per square metre hour</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-From_census_division'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-From_census_division">&#182;</a>
+        </div>
+        <h3>From census division</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from census division&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:census_division</span><span class="p">,</span> </pre></div>
+      </td>
+    </tr>
+    <tr id='section-19'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-19">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-20'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-20">&#182;</a>
+        </div>
+        <p>Looks up the <a href="http://data.brighterplanet.com/census_divisions">census division</a> meeting building <code>natural gas intensity</code> (<em>cubic m / square m hour</em>).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="n">characteristics</span><span class="o">[</span><span class="ss">:census_division</span><span class="o">].</span><span class="n">meeting_building_natural_gas_intensity</span>
+            <span class="k">end</span>
+            </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Default_natural_gas_intensity'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Default_natural_gas_intensity">&#182;</a>
+        </div>
+        <h3>Default natural gas intensity</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-22'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-22">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-23'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-23">&#182;</a>
+        </div>
+        <p>Uses the U.S. average <code>natural gas intensity</code> (<em>cubic m / square m hour</em>).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="no">CensusDivision</span><span class="o">.</span><span class="n">fallback</span><span class="o">.</span><span class="n">meeting_building_natural_gas_intensity</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Fuel_oil_intensity_calculation'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Fuel_oil_intensity_calculation">&#182;</a>
+        </div>
+        <h2>Fuel oil intensity calculation</h2>
+
+<p>Returns the meeting venue&rsquo;s <code>fuel oil intensity</code> (<em>l / square m hour</em>).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:fuel_oil_intensity</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Fuel_oil_intensity_from_census_division'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Fuel_oil_intensity_from_census_division">&#182;</a>
+        </div>
+        <h3>Fuel oil intensity from census division</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from census division&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:census_division</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-26'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-26">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-27'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-27">&#182;</a>
+        </div>
+        <p>Looks up the <a href="http://data.brighterplanet.com/census_divisions">census division</a> meeting building <code>fuel oil intensity</code> (<em>l / square m hour</em>).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="n">characteristics</span><span class="o">[</span><span class="ss">:census_division</span><span class="o">].</span><span class="n">meeting_building_fuel_oil_intensity</span>
+            <span class="k">end</span>
+            </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Default_fuel_oil_intensity'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Default_fuel_oil_intensity">&#182;</a>
+        </div>
+        <h3>Default fuel oil intensity</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-29'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-29">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-30'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-30">&#182;</a>
+        </div>
+        <p>Uses the U.S. average <code>fuel oil intensity</code> (<em>l / square m hour</em>).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="no">CensusDivision</span><span class="o">.</span><span class="n">fallback</span><span class="o">.</span><span class="n">meeting_building_fuel_oil_intensity</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Electricity_intensity_calculation'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Electricity_intensity_calculation">&#182;</a>
+        </div>
+        <h2>Electricity intensity calculation</h2>
+
+<p>Returns the meeting venue&rsquo;s <code>electricity intensity</code> (<em>kWh / square m hour</em>).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:electricity_intensity</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Electricity_intensity_from_census_division_and_eGRID_region'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Electricity_intensity_from_census_division_and_eGRID_region">&#182;</a>
+        </div>
+        <h3>Electricity intensity from census division and eGRID region</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from eGRID region and census division&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:egrid_region</span><span class="p">,</span> <span class="ss">:census_division</span><span class="o">]</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-33'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-33">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-34'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-34">&#182;</a>
+        </div>
+        <ul>
+<li>Looks up the <a href="http://data.brighterplanet.com/census_divisions">census division</a> meeting building <code>electricity intensity</code> (<em>kWh / square m hour</em>)</li>
+<li>Looks up the <a href="http://data.brighterplanet.com/egrid_regions">eGRID region</a> loss factor</li>
+<li>Divides the <code>electricity intensity</code> by 1 &ndash; the loss factor to account for electricity transmission and distribution losses</li>
+</ul>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="n">characteristics</span><span class="o">[</span><span class="ss">:census_division</span><span class="o">].</span><span class="n">meeting_building_electricity_intensity</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">characteristics</span><span class="o">[</span><span class="ss">:egrid_region</span><span class="o">].</span><span class="n">loss_factor</span><span class="p">)</span>
+            <span class="k">end</span>
+            </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Electricity_intensity_from_eGRID_region'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Electricity_intensity_from_eGRID_region">&#182;</a>
+        </div>
+        <h3>Electricity intensity from eGRID region</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from eGRID region&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:egrid_region</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-36'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-36">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-37'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-37">&#182;</a>
+        </div>
+        <ul>
+<li>Uses the U.S. average meeting building <code>electricity intensity</code> (<em>kWh / square m hour</em>)</li>
+<li>Looks up the <a href="http://data.brighterplanet.com/egrid_regions">eGRID region</a> loss factor</li>
+<li>Divides the <code>electricity intensity</code> by (1 &ndash; the loss factor) to account for electricity transmission and distribution losses</li>
+</ul>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="no">CensusDivision</span><span class="o">.</span><span class="n">fallback</span><span class="o">.</span><span class="n">meeting_building_electricity_intensity</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">characteristics</span><span class="o">[</span><span class="ss">:egrid_region</span><span class="o">].</span><span class="n">loss_factor</span><span class="p">)</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
+      </td>
+    </tr>
+    <tr id='section-District_heat_intensity_calculation'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-District_heat_intensity_calculation">&#182;</a>
+        </div>
+        <h2>District heat intensity calculation</h2>
+
+<p>Returns the meeting venue&rsquo;s <code>district heat intensity</code> (<em>MJ / square m hour</em>)</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:district_heat_intensity</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-District_heat_intensity_from_census_division'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-District_heat_intensity_from_census_division">&#182;</a>
+        </div>
+        <h3>District heat intensity from census division</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from census division&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:census_division</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-40'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-40">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-41'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-41">&#182;</a>
+        </div>
+        <p>Looks up the <a href="http://data.brighterplanet.com/census_divisions">census division</a> meeting building <code>district heat intensity</code>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="n">characteristics</span><span class="o">[</span><span class="ss">:census_division</span><span class="o">].</span><span class="n">meeting_building_district_heat_intensity</span>
+            <span class="k">end</span>
+            </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Default_district_heat_intensity'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Default_district_heat_intensity">&#182;</a>
+        </div>
+        <h3>Default district heat intensity</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-43'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-43">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-44'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-44">&#182;</a>
+        </div>
+        <p>Uses the U.S. average.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="no">CensusDivision</span><span class="o">.</span><span class="n">fallback</span><span class="o">.</span><span class="n">meeting_building_district_heat_intensity</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
+      </td>
+    </tr>
+    <tr id='section-eGRID_region_calculation'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-eGRID_region_calculation">&#182;</a>
+        </div>
+        <h2>eGRID region calculation</h2>
+
+<p>Returns the meeting venue&rsquo;s <a href="http://data.brighterplanet.com/egrid_regions">eGRID region</a>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:egrid_region</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-eGRID_region_from_eGRID_subregion'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-eGRID_region_from_eGRID_subregion">&#182;</a>
+        </div>
+        <h3>eGRID region from eGRID subregion</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from eGRID subregion&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:egrid_subregion</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-47'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-47">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-48'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-48">&#182;</a>
+        </div>
+        <p>Looks up the <a href="http://data.brighterplanet.com/egrid_subregions">eGRID subregion</a> <code>eGRID region</code>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="n">characteristics</span><span class="o">[</span><span class="ss">:egrid_subregion</span><span class="o">].</span><span class="n">egrid_region</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
+      </td>
+    </tr>
+    <tr id='section-eGRID_subregion_calculation'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-eGRID_subregion_calculation">&#182;</a>
+        </div>
+        <h2>eGRID subregion calculation</h2>
+
+<p>Returns the meeting venue&rsquo;s <a href="http://data.brighterplanet.com/egrid_subregions">eGRID subregion</a>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:egrid_subregion</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-eGRID_subregion_from_zip_code'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-eGRID_subregion_from_zip_code">&#182;</a>
+        </div>
+        <h3>eGRID subregion from zip code</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from zip code&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:zip_code</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-51'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-51">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-52'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-52">&#182;</a>
+        </div>
+        <p>Looks up the <a href="http://data.brighterplanet.com/zip_codes">zip code</a> <code>eGRID subregion</code>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="n">characteristics</span><span class="o">[</span><span class="ss">:zip_code</span><span class="o">].</span><span class="n">egrid_subregion</span>
+            <span class="k">end</span>
+            </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Default_eGRID_subregion'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Default_eGRID_subregion">&#182;</a>
+        </div>
+        <h3>Default eGRID subregion</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-54'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-54">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-55'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-55">&#182;</a>
+        </div>
+        <p>Uses an artificial eGRID subregion that represents the U.S. average.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="no">EgridSubregion</span><span class="o">.</span><span class="n">find_by_abbreviation</span> <span class="s1">&#39;US&#39;</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Census_division_calculation'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Census_division_calculation">&#182;</a>
+        </div>
+        <h2>Census division calculation</h2>
+
+<p>Returns the meeting venue&rsquo;s <a href="http://data.brighterplanet.com/census_divisions">census division</a>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:census_division</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Census_division_from_state'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Census_division_from_state">&#182;</a>
+        </div>
+        <h3>Census division from state</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from state&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:state</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-58'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-58">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-59'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-59">&#182;</a>
+        </div>
+        <p>Looks up the <a href="http://data.brighterplanet.com/states">state</a> <code>census division</code>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="n">characteristics</span><span class="o">[</span><span class="ss">:state</span><span class="o">].</span><span class="n">census_division</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
+      </td>
+    </tr>
+    <tr id='section-State_calculation'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-State_calculation">&#182;</a>
+        </div>
+        <h2>State calculation</h2>
+
+<p>Returns the meeting venue&rsquo;s <a href="http://data.brighterplanet.com/states">state</a>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:state</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-State_from_zip_code'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-State_from_zip_code">&#182;</a>
+        </div>
+        <h3>State from zip code</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;from zip code&#39;</span><span class="p">,</span> <span class="ss">:needs</span> <span class="o">=&gt;</span> <span class="ss">:zip_code</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-62'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-62">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span> <span class="o">|</span><span class="n">characteristics</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-63'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-63">&#182;</a>
+        </div>
+        <p>Looks up the <a href="http://data.brighterplanet.com/zip_codes">zip code</a> <code>state</code>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="n">characteristics</span><span class="o">[</span><span class="ss">:zip_code</span><span class="o">].</span><span class="n">state</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Zip_code_calculation'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Zip_code_calculation">&#182;</a>
+        </div>
+        <h2>Zip code calculation</h2>
+
+<p>Returns the meeting venue&rsquo;s <a href="http://data.brighterplanet.com/zip_codes">zip code</a>.</p>
+
+<h3>Zip code from client input</h3>
+
+<p><strong>Complies:</strong> All</p>
+
+<p>Uses the client-input <a href="http://data.brighterplanet.com/zip_codes">zip code</a>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Area_calculation'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Area_calculation">&#182;</a>
+        </div>
+        <h2>Area calculation</h2>
+
+<p>Returns the meeting venue&rsquo;s <code>area</code> (<em>square m</em>).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:area</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Area_from_client_input'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Area_from_client_input">&#182;</a>
+        </div>
+        <h3>Area from client input</h3>
+
+<p><strong>Complies:</strong> All</p>
+
+<p>Uses the client-input <code>area</code> (<em>square m</em>).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Default_area'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Default_area">&#182;</a>
+        </div>
+        <h3>Default area</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-68'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-68">&#182;</a>
+        </div>
+        <p><strong>Complies:</strong> GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="ss">:complies</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:ghg_protocol_scope_3</span><span class="p">,</span> <span class="ss">:iso</span><span class="p">,</span> <span class="ss">:tcr</span><span class="o">]</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-69'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-69">&#182;</a>
+        </div>
+        <p>Uses a default <code>area</code> of 1,184.5 <em>square m</em>. This is the average size of meeting buildings in the <a href="http://www.eia.doe.gov/emeu/cbecs/">EIA Commercial Building Energy Consumption Survey</a>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="mi">10_448</span><span class="o">.</span><span class="n">square_feet</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="ss">:square_metres</span><span class="p">)</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+          </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Duration_calculation'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Duration_calculation">&#182;</a>
+        </div>
+        <h2>Duration calculation</h2>
+
+<p>Returns the meeting&rsquo;s <code>duration</code> (seconds). This is the number of seconds the meeting venue is in use. For example, a two-day conference that runs 8 hours each day would have a duration of 57600.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>          <span class="n">committee</span> <span class="ss">:duration</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Duration_from_client_input'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Duration_from_client_input">&#182;</a>
+        </div>
+        <h3>Duration from client input</h3>
+
+<p><strong>Complies:</strong> All</p>
+
+<p>Uses the client-input <code>duration</code> (<em>seconds</em>).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            </pre></div>
+      </td>
+    </tr>
+    <tr id='section-Default_duration'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Default_duration">&#182;</a>
+        </div>
+        <h3>Default duration</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="n">quorum</span> <span class="s1">&#39;default&#39;</span> <span class="k">do</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-73'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-73">&#182;</a>
+        </div>
+        <p>Uses a default <code>duration</code> of 28800 <em>seconds</em> (8 hours).</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>              <span class="mi">28800</span><span class="o">.</span><span class="mi">0</span>
+            <span class="k">end</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
