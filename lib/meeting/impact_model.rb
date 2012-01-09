@@ -30,11 +30,16 @@ module BrighterPlanet
           # Returns the `emission` estimate (*kg CO<sub>2</sub>e*). This is the total emission produced by the meeting venue.
           committee :carbon do
             #### Emission from duration, area, and emission factor
-            quorum 'from duration, area, and emission factor', :needs => [:duration, :area, :emission_factor],
+            quorum 'from duration, area, emission factor, date, and timeframe', :needs => [:duration, :area, :emission_factor, :date],
               # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-                # Multiplies `area` (*square m*) by `duration` (*seconds*) and the `emission factor` (*kg CO<sub>2</sub>e / square m hour*) to give *kg CO<sub>2</sub>e*.
-                characteristics[:duration] / 3600.0 * characteristics[:area] * characteristics[:emission_factor]
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics, timeframe|
+=begin
+                FIXME TODO user-input date should already be coerced
+=end
+                # Check whether `date` falls within `timeframe.`
+                # Multiply `area` (*square m*) by `duration` (*seconds*) and the `emission factor` (*kg CO<sub>2</sub>e / square m hour*) to give *kg CO<sub>2</sub>e*.
+                date = characteristics[:date].is_a?(Date) ? characteristics[:date] : Date.parse(characteristics[:date].to_s)
+                timeframe.include?(date) ? characteristics[:duration] / 3600.0 * characteristics[:area] * characteristics[:emission_factor] : 0.0
             end
             
             #### Default emission
@@ -48,7 +53,7 @@ module BrighterPlanet
           # Returns the `emission factor` (*lbs CO<sub>2</sub>e / square m hour).
           committee :emission_factor do
             #### Emission factor from fuel intensities and eGRID
-            quorum 'from fuel intensities and eGRID', :needs => [:natural_gas_intensity, :fuel_oil_intensity, :electricity_intensity, :district_heat_intensity, :egrid_subregion, :egrid_region],
+            quorum 'from fuel intensities and eGRID', :needs => [:natural_gas_intensity, :fuel_oil_intensity, :electricity_intensity, :district_heat_intensity, :egrid_subregion],
               # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
               :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
                 # Calculates an energy-based emission factor for [natural gas](http://data.brighterplanet.com/fuels) by dividing its `co2 emission factor` (*kg / cubic m*) by its `energy content` (*MJ / cubic m*) to give *kg CO<sub>2</sub> / MJ*
@@ -62,14 +67,11 @@ module BrighterPlanet
                 # Calculates an energy-based emission factor for district heat by dividing the energy-based natural gas emission factor by 0.817 and the energy-based fuel oil emission factor by 0.846 (to account for boiler inefficiencies), averaging the two, and dividing by 0.95 (to account for transmission losses) to give *kg CO<sub>2</sub> / MJ*
                 district_heat_ef = (((natural_gas_energy_ef / 0.817) + (fuel_oil_energy_ef / 0.846)) / 2) / 0.95 # kg / MJ
                 
-                # Calculates an electricity emission factor by dividing the [eGRID subregion](http://data.brighterplanet.com/egrid_subregions) electricity emission factor by 1 - the [eGRID region](http://data.brighterplanet.com/egrid_regions) loss factor (to account for transmission and distribution losses) to give *kg CO<sub>2</sub> / kWh*
-                electricity_ef = characteristics[:egrid_subregion].electricity_emission_factor / (1 - characteristics[:egrid_region].loss_factor)
-                
                 # Multiplies `natural gas intensity` (*cubic m / room-night*) by the volume-based natural gas emission factor (*kg CO<sub>2</sub> / room-night*), `fuel oil intensity` (*l / room-night*) by the volume-based fuel oil emission factor (*kg CO<sub>2</sub> / l*), `electricity intensity` (*kWh / room-night*) by the electricity emission factor (*kg CO<sub>2</sub> / kWh*), and `district heat intensity` (*MJ / room-night*) by the energy-based district heat emission factor (*kg CO<sub>2</sub> / MJ*), and adds these together to give *kg CO<sub>2</sub> / room-night*.
                 (characteristics[:natural_gas_intensity] * natural_gas.co2_emission_factor) +
                 (characteristics[:fuel_oil_intensity] * fuel_oil.co2_emission_factor) +
                 (characteristics[:district_heat_intensity] * district_heat_ef) +
-                (characteristics[:electricity_intensity] * electricity_ef)
+                (characteristics[:electricity_intensity] * characteristics[:egrid_subregion].electricity_emission_factor)
             end
           end
           
@@ -116,24 +118,24 @@ module BrighterPlanet
           ### Electricity intensity calculation
           # Returns the meeting venue's `electricity intensity` (*kWh / square m hour*).
           committee :electricity_intensity do
-            #### Electricity intensity from census division and eGRID region
-            quorum 'from eGRID region and census division', :needs => [:egrid_region, :census_division],
+            #### Electricity intensity from census division and eGRID subregion
+            quorum 'from eGRID subregion and census division', :needs => [:egrid_subregion, :census_division],
               # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
               :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
                 # - Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `electricity intensity` (*kWh / square m hour*)
                 # - Looks up the [eGRID region](http://data.brighterplanet.com/egrid_regions) loss factor
                 # - Divides the `electricity intensity` by 1 - the loss factor to account for electricity transmission and distribution losses
-                characteristics[:census_division].meeting_building_electricity_intensity / (1 - characteristics[:egrid_region].loss_factor)
+                characteristics[:census_division].meeting_building_electricity_intensity / (1 - characteristics[:egrid_subregion].egrid_region.loss_factor)
             end
             
-            #### Electricity intensity from eGRID region
-            quorum 'from eGRID region', :needs => :egrid_region,
+            #### Electricity intensity from eGRID subregion
+            quorum 'from eGRID subregion', :needs => :egrid_subregion,
               # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
               :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
                 # - Uses the U.S. average meeting building `electricity intensity` (*kWh / square m hour*)
                 # - Looks up the [eGRID region](http://data.brighterplanet.com/egrid_regions) loss factor
                 # - Divides the `electricity intensity` by (1 - the loss factor) to account for electricity transmission and distribution losses
-                CensusDivision.fallback.meeting_building_electricity_intensity / (1 - characteristics[:egrid_region].loss_factor)
+                CensusDivision.fallback.meeting_building_electricity_intensity / (1 - characteristics[:egrid_subregion].egrid_region.loss_factor)
             end
           end
           
@@ -157,18 +159,6 @@ module BrighterPlanet
             end
           end
           
-          ### eGRID region calculation
-          # Returns the meeting venue's [eGRID region](http://data.brighterplanet.com/egrid_regions).
-          committee :egrid_region do
-            #### eGRID region from eGRID subregion
-            quorum 'from eGRID subregion', :needs => :egrid_subregion,
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-              # Looks up the [eGRID subregion](http://data.brighterplanet.com/egrid_subregions) `eGRID region`.
-              characteristics[:egrid_subregion].egrid_region
-            end
-          end
-          
           ### eGRID subregion calculation
           # Returns the meeting venue's [eGRID subregion](http://data.brighterplanet.com/egrid_subregions).
           committee :egrid_subregion do
@@ -185,7 +175,7 @@ module BrighterPlanet
               # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
               :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
                 # Uses an artificial eGRID subregion that represents the U.S. average.
-                EgridSubregion.find_by_abbreviation 'US'
+                EgridSubregion.fallback
             end
           end
           
@@ -249,6 +239,18 @@ module BrighterPlanet
             quorum 'default' do
               # Uses a default `duration` of 28800 *seconds* (8 hours).
               28800.0
+            end
+          end
+          
+          #### Date (*date*)
+          # *The day the meeting occurred.*
+          committee :date do
+            # Use client input, if available.
+            
+            # Otherwise use the first day of `timeframe`.
+            quorum 'from timeframe',
+              :complies => [:ghg_protocol_scope_3, :iso] do |characteristics, timeframe|
+                timeframe.from
             end
           end
         end

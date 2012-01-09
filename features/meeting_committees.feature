@@ -29,25 +29,13 @@ Feature: Meeting Committee Calculations
   Scenario: eGRID subregion committee from default
     When the "egrid_subregion" committee reports
     Then the committee should have used quorum "default"
-    And the conclusion of the committee should have "abbreviation" of "US"
+    And the conclusion of the committee should have "name" of "fallback"
 
   Scenario: eGRID subregion committee from zip code
     Given a characteristic "zip_code.name" of "94122"
     When the "egrid_subregion" committee reports
     Then the committee should have used quorum "from zip code"
     And the conclusion of the committee should have "abbreviation" of "CAMX"
-
-  Scenario: eGRID region committee from nothing
-    When the "egrid_subregion" committee reports
-    And the "egrid_region" committee reports
-    Then the committee should have used quorum "from eGRID subregion"
-    And the conclusion of the committee should have "name" of "US"
-
-  Scenario: eGRID region committee from eGRID subregion
-    Given a characteristic "egrid_subregion.abbreviation" of "CAMX"
-    When the "egrid_region" committee reports
-    Then the committee should have used quorum "from eGRID subregion"
-    And the conclusion of the committee should have "name" of "W"
 
   Scenario: District heat intensity committee from default
     When the "district_heat_intensity" committee reports
@@ -60,30 +48,27 @@ Feature: Meeting Committee Calculations
     Then the committee should have used quorum "from census division"
     And the conclusion of the committee should be "0.0"
 
-  Scenario: Electricity intensity committee from default
+  Scenario: Electricity intensity committee from defaults
     When the "egrid_subregion" committee reports
-    And the "egrid_region" committee reports
     And the "electricity_intensity" committee reports
-    Then the committee should have used quorum "from eGRID region"
-    And the conclusion of the committee should be "0.09656"
+    Then the committee should have used quorum "from eGRID subregion"
+    And the conclusion of the committee should be "0.09631"
 
   Scenario: Electricity intensity committee from state
     Given a characteristic "state.postal_abbreviation" of "CA"
     When the "census_division" committee reports
     And the "egrid_subregion" committee reports
-    And the "egrid_region" committee reports
     And the "electricity_intensity" committee reports
-    Then the committee should have used quorum "from eGRID region and census division"
-    And the conclusion of the committee should be "0.05319"
+    Then the committee should have used quorum "from eGRID subregion and census division"
+    And the conclusion of the committee should be "0.05305"
 
-  Scenario: Electricity intensity committee from eGRID region and census division
+  Scenario: Electricity intensity committee from zip code
     Given a characteristic "zip_code.name" of "94122"
     When the "state" committee reports
     And the "census_division" committee reports
     And the "egrid_subregion" committee reports
-    And the "egrid_region" committee reports
     And the "electricity_intensity" committee reports
-    Then the committee should have used quorum "from eGRID region and census division"
+    Then the committee should have used quorum "from eGRID subregion and census division"
     And the conclusion of the committee should be "0.05263"
 
   Scenario: Fuel oil intensity committee from default
@@ -110,38 +95,35 @@ Feature: Meeting Committee Calculations
 
   Scenario: Emission factor committee from nothing
     When the "egrid_subregion" committee reports
-    And the "egrid_region" committee reports
     And the "natural_gas_intensity" committee reports
     And the "fuel_oil_intensity" committee reports
     And the "electricity_intensity" committee reports
     And the "district_heat_intensity" committee reports
     And the "emission_factor" committee reports
     Then the committee should have used quorum "from fuel intensities and eGRID"
-    And the conclusion of the committee should be "0.09744"
+    And the conclusion of the committee should be "0.06848"
 
   Scenario: Emission factor committee from state
     Given a characteristic "state.postal_abbreviation" of "CA"
     When the "census_division" committee reports
     And the "egrid_subregion" committee reports
-    And the "egrid_region" committee reports
     And the "natural_gas_intensity" committee reports
     And the "fuel_oil_intensity" committee reports
     And the "electricity_intensity" committee reports
     And the "district_heat_intensity" committee reports
     And the "emission_factor" committee reports
     Then the committee should have used quorum "from fuel intensities and eGRID"
-    And the conclusion of the committee should be "0.03775"
+    And the conclusion of the committee should be "0.02180"
 
   Scenario: Emission factor committee from zip code
     Given a characteristic "zip_code.name" of "94122"
     When the "state" committee reports
     And the "census_division" committee reports
     And the "egrid_subregion" committee reports
-    And the "egrid_region" committee reports
     And the "natural_gas_intensity" committee reports
     And the "fuel_oil_intensity" committee reports
     And the "electricity_intensity" committee reports
     And the "district_heat_intensity" committee reports
     And the "emission_factor" committee reports
     Then the committee should have used quorum "from fuel intensities and eGRID"
-    And the conclusion of the committee should be "0.02042"
+    And the conclusion of the committee should be "0.01965"
