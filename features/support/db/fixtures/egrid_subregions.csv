@@ -1,3 +1,3 @@
-abbreviation,name,nerc_abbreviation,egrid_region_name,net_generation,electricity_co2_emission_factor,electricity_co2_biogenic_emission_factor,electricity_ch4_emission_factor,electricity_n2o_emission_factor,electricity_emission_factor
-CAMX,WECC California,WECC,W,220000000,0.3,0,0.0003,0.0008,0.3011
-NEWE,NPCC New England,NPCC,E,132000000,0.4,0,0.0009,0.002,0.4029
+abbreviation,egrid_region_name,net_generation,electricity_emission_factor
+CAMX,Western,220,0.3
+NEWE,Eastern,132,0.33

@@ -26,20 +26,23 @@ module BrighterPlanet
     module ImpactModel
       def self.included(base)
         base.decide :impact, :with => :characteristics do
-          ### Emission calculation
-          # Returns the `emission` estimate (*kg CO<sub>2</sub>e*). This is the total emission produced by the meeting venue.
+          # * * *
+          
+          #### Carbon (*kg CO<sub>2</sub>e*)
+          # *The meeting's total anthropogenic greenhouse gas emissions during `timeframe`.*
           committee :carbon do
-            #### Emission from duration, area, and emission factor
-            quorum 'from duration, area, emission factor, date, and timeframe', :needs => [:duration, :area, :emission_factor, :date],
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+            # If `date` falls within `timeframe` multiply each fuel use by the fuel's emission factor and sum to give *kg CO</sub>2</sub>e*. Otherwise carbon is zero.
+            quorum 'from fuel uses, electricity emission factor, date, and timeframe', :needs => [:natural_gas_use, :fuel_oil_use, :electricity_use, :district_heat_use, :electricity_emission_factor, :date],
               :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics, timeframe|
-=begin
-                FIXME TODO user-input date should already be coerced
-=end
-                # Check whether `date` falls within `timeframe.`
-                # Multiply `area` (*square m*) by `duration` (*seconds*) and the `emission factor` (*kg CO<sub>2</sub>e / square m hour*) to give *kg CO<sub>2</sub>e*.
                 date = characteristics[:date].is_a?(Date) ? characteristics[:date] : Date.parse(characteristics[:date].to_s)
-                timeframe.include?(date) ? characteristics[:duration] / 3600.0 * characteristics[:area] * characteristics[:emission_factor] : 0.0
+                if timeframe.include? date
+                   (characteristics[:natural_gas_use] * Fuel.find('Pipeline Natural Gas').co2_emission_factor) +
+                   (characteristics[:fuel_oil_use] * Fuel.find('Distillate Fuel Oil No. 2').co2_emission_factor) +
+                   (characteristics[:electricity_use] * characteristics[:electricity_emission_factor]) +
+                   (characteristics[:district_heat_use] * Fuel.find('District Heat').co2_emission_factor)
+                else
+                  0
+                end
             end
             
             #### Default emission
@@ -49,195 +52,138 @@ module BrighterPlanet
             end
           end
           
-          ### Emission factor calculation
-          # Returns the `emission factor` (*lbs CO<sub>2</sub>e / square m hour).
-          committee :emission_factor do
-            #### Emission factor from fuel intensities and eGRID
-            quorum 'from fuel intensities and eGRID', :needs => [:natural_gas_intensity, :fuel_oil_intensity, :electricity_intensity, :district_heat_intensity, :egrid_subregion],
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-                # Calculates an energy-based emission factor for [natural gas](http://data.brighterplanet.com/fuels) by dividing its `co2 emission factor` (*kg / cubic m*) by its `energy content` (*MJ / cubic m*) to give *kg CO<sub>2</sub> / MJ*
-                natural_gas = Fuel.find_by_name "Pipeline Natural Gas"
-                natural_gas_energy_ef = natural_gas.co2_emission_factor / natural_gas.energy_content
-                
-                # Calculates an energy-based emission factor for [fuel oil](http://data.brighterplanet.com/fuels) by dividing its `co2 emission factor` (*kg / l*) by its `energy content` (*MJ / l*) to give *kg CO<sub>2</sub> / MJ*
-                fuel_oil = Fuel.find_by_name "Distillate Fuel Oil No. 2"
-                fuel_oil_energy_ef = fuel_oil.co2_emission_factor / fuel_oil.energy_content
-                
-                # Calculates an energy-based emission factor for district heat by dividing the energy-based natural gas emission factor by 0.817 and the energy-based fuel oil emission factor by 0.846 (to account for boiler inefficiencies), averaging the two, and dividing by 0.95 (to account for transmission losses) to give *kg CO<sub>2</sub> / MJ*
-                district_heat_ef = (((natural_gas_energy_ef / 0.817) + (fuel_oil_energy_ef / 0.846)) / 2) / 0.95 # kg / MJ
-                
-                # Multiplies `natural gas intensity` (*cubic m / room-night*) by the volume-based natural gas emission factor (*kg CO<sub>2</sub> / room-night*), `fuel oil intensity` (*l / room-night*) by the volume-based fuel oil emission factor (*kg CO<sub>2</sub> / l*), `electricity intensity` (*kWh / room-night*) by the electricity emission factor (*kg CO<sub>2</sub> / kWh*), and `district heat intensity` (*MJ / room-night*) by the energy-based district heat emission factor (*kg CO<sub>2</sub> / MJ*), and adds these together to give *kg CO<sub>2</sub> / room-night*.
-                (characteristics[:natural_gas_intensity] * natural_gas.co2_emission_factor) +
-                (characteristics[:fuel_oil_intensity] * fuel_oil.co2_emission_factor) +
-                (characteristics[:district_heat_intensity] * district_heat_ef) +
-                (characteristics[:electricity_intensity] * characteristics[:egrid_subregion].electricity_emission_factor)
-            end
-          end
-          
-          ### Natural gas intensity calculation
-          # Returns the meeting venue's `natural gas intensity` (*cubic m / square m hour*).
-          committee :natural_gas_intensity do # returns cubic metres per square metre hour
-            #### From census division
-            quorum 'from census division', :needs => :census_division, 
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-                # Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `natural gas intensity` (*cubic m / square m hour*).
-                characteristics[:census_division].meeting_building_natural_gas_intensity
-            end
-            
-            #### Default natural gas intensity
-            quorum 'default',
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
-                # Uses the U.S. average `natural gas intensity` (*cubic m / square m hour*).
-                CensusDivision.fallback.meeting_building_natural_gas_intensity
-            end
-          end
-          
-          ### Fuel oil intensity calculation
-          # Returns the meeting venue's `fuel oil intensity` (*l / square m hour*).
-          committee :fuel_oil_intensity do
-            #### Fuel oil intensity from census division
-            quorum 'from census division', :needs => :census_division,
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-                # Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `fuel oil intensity` (*l / square m hour*).
-                characteristics[:census_division].meeting_building_fuel_oil_intensity
-            end
-            
-            #### Default fuel oil intensity
-            quorum 'default',
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
-                # Uses the U.S. average `fuel oil intensity` (*l / square m hour*).
-                CensusDivision.fallback.meeting_building_fuel_oil_intensity
-            end
-          end
-          
-          ### Electricity intensity calculation
-          # Returns the meeting venue's `electricity intensity` (*kWh / square m hour*).
-          committee :electricity_intensity do
-            #### Electricity intensity from census division and eGRID subregion
-            quorum 'from eGRID subregion and census division', :needs => [:egrid_subregion, :census_division],
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-                # - Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `electricity intensity` (*kWh / square m hour*)
-                # - Looks up the [eGRID region](http://data.brighterplanet.com/egrid_regions) loss factor
-                # - Divides the `electricity intensity` by 1 - the loss factor to account for electricity transmission and distribution losses
-                characteristics[:census_division].meeting_building_electricity_intensity / (1 - characteristics[:egrid_subregion].egrid_region.loss_factor)
-            end
-            
-            #### Electricity intensity from eGRID subregion
+          #### Electricity emission factor (*kg CO<sub>2</sub>e / kWh*)
+          # *A greenhouse gas emission factor for the meeting's electricity use including transmission and distribution losses.*
+          committee :electricity_emission_factor do
+            # Divide the `eGRID subregion` electricity emission factor (*kg CO<sub>2</sub>e / kWh*) by 1 minus the `eGRID subregion` eGRID region loss factor to give *kg CO<sub>2</sub>e / kWh*.
             quorum 'from eGRID subregion', :needs => :egrid_subregion,
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
               :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-                # - Uses the U.S. average meeting building `electricity intensity` (*kWh / square m hour*)
-                # - Looks up the [eGRID region](http://data.brighterplanet.com/egrid_regions) loss factor
-                # - Divides the `electricity intensity` by (1 - the loss factor) to account for electricity transmission and distribution losses
-                CensusDivision.fallback.meeting_building_electricity_intensity / (1 - characteristics[:egrid_subregion].egrid_region.loss_factor)
-            end
-          end
-          
-          ### District heat intensity calculation
-          # Returns the meeting venue's `district heat intensity` (*MJ / square m hour*)
-          committee :district_heat_intensity do
-            #### District heat intensity from census division
-            quorum 'from census division', :needs => :census_division,
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-                # Looks up the [census division](http://data.brighterplanet.com/census_divisions) meeting building `district heat intensity`.
-                characteristics[:census_division].meeting_building_district_heat_intensity
+                characteristics[:egrid_subregion].electricity_emission_factor / (1 - characteristics[:egrid_subregion].egrid_region.loss_factor)
             end
             
-            #### Default district heat intensity
+            # Divide the `state` electricity emission factor (*kg CO<sub>2</sub>e / kWh*) by 1 minus the state electricity loss factor to give *kg CO<sub>2</sub>e / kWh*.
+            quorum 'from state', :needs => :state,
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+                characteristics[:state].electricity_emission_factor / (1 - characteristics[:state].electricity_loss_factor)
+            end
+            
+            # Otherwise divide the U.S. average electricity emission factor (*kg CO<sub>2</sub>e / kWh*) by the U.S. average electricity loss factor to give *kg CO<sub>2</sub>e / kWh*.
             quorum 'default',
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
               :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
-                # Uses the U.S. average.
-                CensusDivision.fallback.meeting_building_district_heat_intensity
+                EgridSubregion.fallback.electricity_emission_factor / (1 - EgridSubregion.fallback.egrid_region.loss_factor)
             end
           end
           
-          ### eGRID subregion calculation
-          # Returns the meeting venue's [eGRID subregion](http://data.brighterplanet.com/egrid_subregions).
-          committee :egrid_subregion do
-            #### eGRID subregion from zip code
-            quorum 'from zip code', :needs => :zip_code,
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
+          #### Natural gas use (*m<sup>3</sup>*)
+          # *The meeting's natural gas use.*
+          committee :natural_gas_use do
+            # Multiply the `census division` meeting building natural gas intensity (*m<sup>3</sup> / m<sup>2</sup> hour*) by `area` (*m<sup>2</sup>*) and `duration` (*seconds*) / 3600 (*seconds / hour*) to give *m<sup>3</sup>*.
+            quorum 'from census division, area, and duration', :needs => [:census_division, :area, :duration],
               :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-                # Looks up the [zip code](http://data.brighterplanet.com/zip_codes) `eGRID subregion`.
+                characteristics[:census_division].meeting_building_natural_gas_intensity *
+                  characteristics[:area] *
+                  characteristics[:duration] / 3600.0
+            end
+          end
+          
+          #### Fuel oil use (*l*)
+          # *The meeting's fuel oil use.*
+          committee :fuel_oil_use do
+            # Multiply the `census division` meeting building fuel oil intensity (*l / m<sup>2</sup> hour*) by `area` (*m<sup>2</sup>*) and `duration` (*seconds*) / 3600 (*seconds / hour*) to give *l*.
+            quorum 'from census division, area, and duration', :needs => [:census_division, :area, :duration],
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+                characteristics[:census_division].meeting_building_fuel_oil_intensity *
+                  characteristics[:area] *
+                  characteristics[:duration] / 3600.0
+            end
+          end
+          
+          #### Electricity use (*kWh*)
+          # *The meeting's electricity use.*
+          committee :electricity_use do
+            # Multiply the `census division` meeting building electricity intensity (*kWh / m<sup>2</sup> hour*) by `area` (*m<sup>2</sup>*) and `duration` (*seconds*) / 3600 (*seconds / hour*) to give *kWh*.
+            quorum 'from census division, area, and duration', :needs => [:census_division, :area, :duration],
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+                characteristics[:census_division].meeting_building_electricity_intensity *
+                  characteristics[:area] *
+                  characteristics[:duration] / 3600.0
+            end
+          end
+          
+          #### District heat use (*MJ*)
+          # *The meeting's district heat use.*
+          committee :district_heat_use do
+            # Multiply the `census division` meeting building district heat intensity (*MJ / m<sup>2</sup> hour*) by `area` (*m<sup>2</sup>*) and `duration` (*seconds*) / 3600 (*seconds / hour*) to give *MJ*.
+            quorum 'from census division, area, and duration', :needs => [:census_division, :area, :duration],
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
+                characteristics[:census_division].meeting_building_district_heat_intensity *
+                  characteristics[:area] *
+                  characteristics[:duration] / 3600.0
+            end
+          end
+          
+          #### eGRID subregion
+          # *The meeting venue's [eGRID subregion](http://data.brighterplanet.com/egrid_subregions).*
+          committee :egrid_subregion do
+            # Look up the `zip code` eGRID subregion.
+            quorum 'from zip code', :needs => :zip_code,
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
                 characteristics[:zip_code].egrid_subregion
             end
-            
-            #### Default eGRID subregion
-            quorum 'default',
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
-              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
-                # Uses an artificial eGRID subregion that represents the U.S. average.
-                EgridSubregion.fallback
-            end
           end
           
-          ### Census division calculation
-          # Returns the meeting venue's [census division](http://data.brighterplanet.com/census_divisions).
+          #### Census division
+          # *The meeting venue's [census division](http://data.brighterplanet.com/census_divisions).*
           committee :census_division do
-            #### Census division from state
+            # Look up the `state` census division.
             quorum 'from state', :needs => :state,
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
               :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-                # Looks up the [state](http://data.brighterplanet.com/states) `census division`.
                 characteristics[:state].census_division
             end
+            
+            # Otherwise uses an artificial census division representing U.S. averages.
+            quorum 'default',
+              :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
+                CensusDivision.fallback
+            end
           end
           
-          ### State calculation
-          # Returns the meeting venue's [state](http://data.brighterplanet.com/states).
+          #### State
+          # *The meeting venue's [state](http://data.brighterplanet.com/states).*
           committee :state do
-            #### State from zip code
+            # Use client input, if available.
+            
+            # Otherwise look up the `zip code` state.
             quorum 'from zip code', :needs => :zip_code,
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
               :complies => [:ghg_protocol_scope_3, :iso, :tcr] do |characteristics|
-                # Looks up the [zip code](http://data.brighterplanet.com/zip_codes) `state`.
                 characteristics[:zip_code].state
             end
           end
           
-          ### Zip code calculation
-          # Returns the meeting venue's [zip code](http://data.brighterplanet.com/zip_codes).
-            #### Zip code from client input
-            # **Complies:** All
-            #
-            # Uses the client-input [zip code](http://data.brighterplanet.com/zip_codes).
+          #### Zip code
+          # *The [zip code](http://data.brighterplanet.com/zip_codes) of the meeting venue.*
+          #
+          # Use client input, if available.
           
-          ### Area calculation
-          # Returns the meeting venue's `area` (*square m*).
+          #### Area (*m<sup>2</sup>*)
+          # *The meeting venue's area.*
           committee :area do
-            #### Area from client input
-            # **Complies:** All
-            #
-            # Uses the client-input `area` (*square m*).
+            # Use client input, if available.
             
-            #### Default area
+            # Otherwise use 1,184.5 *m<sup>2</sup>* (the average size of meeting buildings in the [EIA Commercial Building Energy Consumption Survey](http://data.brighterplanet.com/commercial_building_energy_consumption_survey_responses)).
             quorum 'default',
-              # **Complies:** GHG Protocol Scope 3, ISO 14064-1, Climate Registry Protocol
               :complies => [:ghg_protocol_scope_3, :iso, :tcr] do
-                # Uses a default `area` of 1,184.5 *square m*. This is the average size of meeting buildings in the [EIA Commercial Building Energy Consumption Survey](http://www.eia.doe.gov/emeu/cbecs/).
                 10_448.square_feet.to(:square_metres)
             end
           end
           
-          ### Duration calculation
-          # Returns the meeting's `duration` (seconds). This is the number of seconds the meeting venue is in use. For example, a two-day conference that runs 8 hours each day would have a duration of 57600.
+          #### Duration (*seconds*)
+          # *The meeting's duration - the length of time the meeting facilities are in use. For example a two-day conference that runs 8 hours each day would have a duration of 57600.*
           committee :duration do
-            #### Duration from client input
-            # **Complies:** All
-            #
-            # Uses the client-input `duration` (*seconds*).
+            # Uses client input, if available.
             
-            #### Default duration
+            # Otherwise use 28800 *seconds* (8 hours).
             quorum 'default' do
-              # Uses a default `duration` of 28800 *seconds* (8 hours).
               28800.0
             end
           end

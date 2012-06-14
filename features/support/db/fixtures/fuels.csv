@@ -1,3 +1,4 @@
 name,energy_content,energy_content_units,co2_emission_factor,co2_emission_factor_units
-Distillate Fuel Oil No. 2,38,megajoules_per_litre,2.7,kilograms_per_litre
+Distillate Fuel Oil No. 2,38.0,megajoules_per_litre,2.7,kilograms_per_litre
+District Heat,1,megajoules_per_megajoule,0.08,kilograms_per_megajoule
 Pipeline Natural Gas

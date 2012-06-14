@@ -1,2 +1,2 @@
-postal_abbreviation,census_division_number
-CA,9
+postal_abbreviation,census_division_number,electricity_emission_factor,electricity_loss_factor
+CA,9,0.3,0.05
