@@ -1,5 +1,11 @@
 require 'emitter'
 
+require 'meeting/impact_model'
+require 'meeting/characterization'
+require 'meeting/data'
+require 'meeting/relationships'
+require 'meeting/summarization'
+
 module BrighterPlanet
   module Meeting
     extend BrighterPlanet::Emitter

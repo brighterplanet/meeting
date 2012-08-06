@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   
   s.add_runtime_dependency 'earth',     '~>0.12.1'
-  s.add_runtime_dependency 'emitter',   '~>0.11.0'
+  s.add_dependency 'emitter', '~> 1.0.0'
   s.add_development_dependency 'sniff', '~>0.11.4'
   s.add_development_dependency 'sqlite3'
 end
